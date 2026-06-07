@@ -1,0 +1,3 @@
+{
+  "extends": "@project-management-mockup/config/tsconfig.base.json"
+}

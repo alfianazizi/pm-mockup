@@ -1,0 +1,24 @@
+{
+  "$schema": "https://ui.shadcn.com/schema.json",
+  "style": "base-lyra",
+  "rsc": false,
+  "tsx": true,
+  "tailwind": {
+    "config": "",
+    "css": "src/styles/globals.css",
+    "baseColor": "neutral",
+    "cssVariables": true,
+    "prefix": ""
+  },
+  "iconLibrary": "lucide",
+  "aliases": {
+    "components": "@project-management-mockup/ui/components",
+    "utils": "@project-management-mockup/ui/lib/utils",
+    "hooks": "@project-management-mockup/ui/hooks",
+    "lib": "@project-management-mockup/ui/lib",
+    "ui": "@project-management-mockup/ui/components"
+  },
+  "menuColor": "default",
+  "menuAccent": "subtle",
+  "registries": {}
+}
