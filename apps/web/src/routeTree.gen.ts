@@ -14,16 +14,16 @@ import { Route as DashboardRouteImport } from './routes/dashboard'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as UsersIndexRouteImport } from './routes/users.index'
 import { Route as TemplatesIndexRouteImport } from './routes/templates.index'
-import { Route as SubholdingsIndexRouteImport } from './routes/subholdings.index'
 import { Route as SettingsIndexRouteImport } from './routes/settings.index'
 import { Route as ReportsIndexRouteImport } from './routes/reports.index'
 import { Route as ProjectsIndexRouteImport } from './routes/projects.index'
+import { Route as DepartmentsIndexRouteImport } from './routes/departments.index'
 import { Route as BudgetMonitoringIndexRouteImport } from './routes/budget-monitoring.index'
 import { Route as ApprovalsIndexRouteImport } from './routes/approvals.index'
 import { Route as TemplatesNewRouteImport } from './routes/templates.new'
-import { Route as SubholdingsSubholdingIdRouteImport } from './routes/subholdings.$subholdingId'
 import { Route as ProjectsNewRouteImport } from './routes/projects.new'
 import { Route as ProjectsProjectIdRouteImport } from './routes/projects.$projectId'
+import { Route as DepartmentsDepartmentIdRouteImport } from './routes/departments.$departmentId'
 import { Route as TemplatesTemplateIdEditRouteImport } from './routes/templates.$templateId.edit'
 
 const LoginRoute = LoginRouteImport.update({
@@ -51,11 +51,6 @@ const TemplatesIndexRoute = TemplatesIndexRouteImport.update({
   path: '/templates/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const SubholdingsIndexRoute = SubholdingsIndexRouteImport.update({
-  id: '/subholdings/',
-  path: '/subholdings/',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const SettingsIndexRoute = SettingsIndexRouteImport.update({
   id: '/settings/',
   path: '/settings/',
@@ -69,6 +64,11 @@ const ReportsIndexRoute = ReportsIndexRouteImport.update({
 const ProjectsIndexRoute = ProjectsIndexRouteImport.update({
   id: '/projects/',
   path: '/projects/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DepartmentsIndexRoute = DepartmentsIndexRouteImport.update({
+  id: '/departments/',
+  path: '/departments/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const BudgetMonitoringIndexRoute = BudgetMonitoringIndexRouteImport.update({
@@ -86,11 +86,6 @@ const TemplatesNewRoute = TemplatesNewRouteImport.update({
   path: '/templates/new',
   getParentRoute: () => rootRouteImport,
 } as any)
-const SubholdingsSubholdingIdRoute = SubholdingsSubholdingIdRouteImport.update({
-  id: '/subholdings/$subholdingId',
-  path: '/subholdings/$subholdingId',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const ProjectsNewRoute = ProjectsNewRouteImport.update({
   id: '/projects/new',
   path: '/projects/new',
@@ -99,6 +94,11 @@ const ProjectsNewRoute = ProjectsNewRouteImport.update({
 const ProjectsProjectIdRoute = ProjectsProjectIdRouteImport.update({
   id: '/projects/$projectId',
   path: '/projects/$projectId',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DepartmentsDepartmentIdRoute = DepartmentsDepartmentIdRouteImport.update({
+  id: '/departments/$departmentId',
+  path: '/departments/$departmentId',
   getParentRoute: () => rootRouteImport,
 } as any)
 const TemplatesTemplateIdEditRoute = TemplatesTemplateIdEditRouteImport.update({
@@ -111,16 +111,16 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/dashboard': typeof DashboardRoute
   '/login': typeof LoginRoute
+  '/departments/$departmentId': typeof DepartmentsDepartmentIdRoute
   '/projects/$projectId': typeof ProjectsProjectIdRoute
   '/projects/new': typeof ProjectsNewRoute
-  '/subholdings/$subholdingId': typeof SubholdingsSubholdingIdRoute
   '/templates/new': typeof TemplatesNewRoute
   '/approvals/': typeof ApprovalsIndexRoute
   '/budget-monitoring/': typeof BudgetMonitoringIndexRoute
+  '/departments/': typeof DepartmentsIndexRoute
   '/projects/': typeof ProjectsIndexRoute
   '/reports/': typeof ReportsIndexRoute
   '/settings/': typeof SettingsIndexRoute
-  '/subholdings/': typeof SubholdingsIndexRoute
   '/templates/': typeof TemplatesIndexRoute
   '/users/': typeof UsersIndexRoute
   '/templates/$templateId/edit': typeof TemplatesTemplateIdEditRoute
@@ -129,16 +129,16 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/dashboard': typeof DashboardRoute
   '/login': typeof LoginRoute
+  '/departments/$departmentId': typeof DepartmentsDepartmentIdRoute
   '/projects/$projectId': typeof ProjectsProjectIdRoute
   '/projects/new': typeof ProjectsNewRoute
-  '/subholdings/$subholdingId': typeof SubholdingsSubholdingIdRoute
   '/templates/new': typeof TemplatesNewRoute
   '/approvals': typeof ApprovalsIndexRoute
   '/budget-monitoring': typeof BudgetMonitoringIndexRoute
+  '/departments': typeof DepartmentsIndexRoute
   '/projects': typeof ProjectsIndexRoute
   '/reports': typeof ReportsIndexRoute
   '/settings': typeof SettingsIndexRoute
-  '/subholdings': typeof SubholdingsIndexRoute
   '/templates': typeof TemplatesIndexRoute
   '/users': typeof UsersIndexRoute
   '/templates/$templateId/edit': typeof TemplatesTemplateIdEditRoute
@@ -148,16 +148,16 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/dashboard': typeof DashboardRoute
   '/login': typeof LoginRoute
+  '/departments/$departmentId': typeof DepartmentsDepartmentIdRoute
   '/projects/$projectId': typeof ProjectsProjectIdRoute
   '/projects/new': typeof ProjectsNewRoute
-  '/subholdings/$subholdingId': typeof SubholdingsSubholdingIdRoute
   '/templates/new': typeof TemplatesNewRoute
   '/approvals/': typeof ApprovalsIndexRoute
   '/budget-monitoring/': typeof BudgetMonitoringIndexRoute
+  '/departments/': typeof DepartmentsIndexRoute
   '/projects/': typeof ProjectsIndexRoute
   '/reports/': typeof ReportsIndexRoute
   '/settings/': typeof SettingsIndexRoute
-  '/subholdings/': typeof SubholdingsIndexRoute
   '/templates/': typeof TemplatesIndexRoute
   '/users/': typeof UsersIndexRoute
   '/templates/$templateId/edit': typeof TemplatesTemplateIdEditRoute
@@ -168,16 +168,16 @@ export interface FileRouteTypes {
     | '/'
     | '/dashboard'
     | '/login'
+    | '/departments/$departmentId'
     | '/projects/$projectId'
     | '/projects/new'
-    | '/subholdings/$subholdingId'
     | '/templates/new'
     | '/approvals/'
     | '/budget-monitoring/'
+    | '/departments/'
     | '/projects/'
     | '/reports/'
     | '/settings/'
-    | '/subholdings/'
     | '/templates/'
     | '/users/'
     | '/templates/$templateId/edit'
@@ -186,16 +186,16 @@ export interface FileRouteTypes {
     | '/'
     | '/dashboard'
     | '/login'
+    | '/departments/$departmentId'
     | '/projects/$projectId'
     | '/projects/new'
-    | '/subholdings/$subholdingId'
     | '/templates/new'
     | '/approvals'
     | '/budget-monitoring'
+    | '/departments'
     | '/projects'
     | '/reports'
     | '/settings'
-    | '/subholdings'
     | '/templates'
     | '/users'
     | '/templates/$templateId/edit'
@@ -204,16 +204,16 @@ export interface FileRouteTypes {
     | '/'
     | '/dashboard'
     | '/login'
+    | '/departments/$departmentId'
     | '/projects/$projectId'
     | '/projects/new'
-    | '/subholdings/$subholdingId'
     | '/templates/new'
     | '/approvals/'
     | '/budget-monitoring/'
+    | '/departments/'
     | '/projects/'
     | '/reports/'
     | '/settings/'
-    | '/subholdings/'
     | '/templates/'
     | '/users/'
     | '/templates/$templateId/edit'
@@ -223,16 +223,16 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   DashboardRoute: typeof DashboardRoute
   LoginRoute: typeof LoginRoute
+  DepartmentsDepartmentIdRoute: typeof DepartmentsDepartmentIdRoute
   ProjectsProjectIdRoute: typeof ProjectsProjectIdRoute
   ProjectsNewRoute: typeof ProjectsNewRoute
-  SubholdingsSubholdingIdRoute: typeof SubholdingsSubholdingIdRoute
   TemplatesNewRoute: typeof TemplatesNewRoute
   ApprovalsIndexRoute: typeof ApprovalsIndexRoute
   BudgetMonitoringIndexRoute: typeof BudgetMonitoringIndexRoute
+  DepartmentsIndexRoute: typeof DepartmentsIndexRoute
   ProjectsIndexRoute: typeof ProjectsIndexRoute
   ReportsIndexRoute: typeof ReportsIndexRoute
   SettingsIndexRoute: typeof SettingsIndexRoute
-  SubholdingsIndexRoute: typeof SubholdingsIndexRoute
   TemplatesIndexRoute: typeof TemplatesIndexRoute
   UsersIndexRoute: typeof UsersIndexRoute
   TemplatesTemplateIdEditRoute: typeof TemplatesTemplateIdEditRoute
@@ -275,13 +275,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof TemplatesIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/subholdings/': {
-      id: '/subholdings/'
-      path: '/subholdings'
-      fullPath: '/subholdings/'
-      preLoaderRoute: typeof SubholdingsIndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/settings/': {
       id: '/settings/'
       path: '/settings'
@@ -301,6 +294,13 @@ declare module '@tanstack/react-router' {
       path: '/projects'
       fullPath: '/projects/'
       preLoaderRoute: typeof ProjectsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/departments/': {
+      id: '/departments/'
+      path: '/departments'
+      fullPath: '/departments/'
+      preLoaderRoute: typeof DepartmentsIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/budget-monitoring/': {
@@ -324,13 +324,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof TemplatesNewRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/subholdings/$subholdingId': {
-      id: '/subholdings/$subholdingId'
-      path: '/subholdings/$subholdingId'
-      fullPath: '/subholdings/$subholdingId'
-      preLoaderRoute: typeof SubholdingsSubholdingIdRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/projects/new': {
       id: '/projects/new'
       path: '/projects/new'
@@ -343,6 +336,13 @@ declare module '@tanstack/react-router' {
       path: '/projects/$projectId'
       fullPath: '/projects/$projectId'
       preLoaderRoute: typeof ProjectsProjectIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/departments/$departmentId': {
+      id: '/departments/$departmentId'
+      path: '/departments/$departmentId'
+      fullPath: '/departments/$departmentId'
+      preLoaderRoute: typeof DepartmentsDepartmentIdRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/templates/$templateId/edit': {
@@ -359,16 +359,16 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   DashboardRoute: DashboardRoute,
   LoginRoute: LoginRoute,
+  DepartmentsDepartmentIdRoute: DepartmentsDepartmentIdRoute,
   ProjectsProjectIdRoute: ProjectsProjectIdRoute,
   ProjectsNewRoute: ProjectsNewRoute,
-  SubholdingsSubholdingIdRoute: SubholdingsSubholdingIdRoute,
   TemplatesNewRoute: TemplatesNewRoute,
   ApprovalsIndexRoute: ApprovalsIndexRoute,
   BudgetMonitoringIndexRoute: BudgetMonitoringIndexRoute,
+  DepartmentsIndexRoute: DepartmentsIndexRoute,
   ProjectsIndexRoute: ProjectsIndexRoute,
   ReportsIndexRoute: ReportsIndexRoute,
   SettingsIndexRoute: SettingsIndexRoute,
-  SubholdingsIndexRoute: SubholdingsIndexRoute,
   TemplatesIndexRoute: TemplatesIndexRoute,
   UsersIndexRoute: UsersIndexRoute,
   TemplatesTemplateIdEditRoute: TemplatesTemplateIdEditRoute,

@@ -31,7 +31,7 @@ export function Sidebar({ items, currentPath }: { items: NavItem[]; currentPath:
           PH
         </div>
         <div className="flex flex-col leading-tight">
-          <span className="text-sm font-semibold">Pratama Holding</span>
+          <span className="text-sm font-semibold">Pratama Company</span>
           <span className="text-[10px] text-sidebar-muted uppercase tracking-wide">PMO Console</span>
         </div>
       </div>

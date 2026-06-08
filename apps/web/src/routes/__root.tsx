@@ -25,10 +25,10 @@ export const Route = createRootRouteWithContext<RouterAppContext>()({
   component: RootComponent,
   head: () => ({
     meta: [
-      { title: "Pratama Holding PMO" },
+      { title: "Pratama Company PMO" },
       {
         name: "description",
-        content: "Manage projects and templates across the holding.",
+        content: "Manage projects and templates across the company.",
       },
     ],
     links: [

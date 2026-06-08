@@ -13,14 +13,14 @@ import { ProgressBar } from "@/components/common/progress-bar";
 import { StatusBadge } from "@/components/common/status-badge";
 import { useAppState } from "@/lib/app-state";
 import { createProjectFromTemplate } from "@/lib/actions";
-import { ROLE_LABELS, type ProjectTemplate, type Subholding } from "@/lib/domain";
+import { ROLE_LABELS, type ProjectTemplate, type Department } from "@/lib/domain";
 import { formatIDRBillions, initials } from "@/lib/formatters";
 import { canCreateProject } from "@/lib/permissions";
-import { getCurrentUser, visibleSubholdings } from "@/lib/selectors";
+import { getCurrentUser, visibleDepartments } from "@/lib/selectors";
 import { toast } from "sonner";
 
 interface WizardState {
-  subholdingId?: string;
+  departmentId?: string;
   templateId?: string;
   name: string;
   description: string;
@@ -36,7 +36,7 @@ interface WizardState {
 }
 
 const STEPS = [
-  { key: "scope", label: "Subholding and template", icon: Folder },
+  { key: "scope", label: "Department and template", icon: Folder },
   { key: "details", label: "Project details", icon: FileText },
   { key: "budget", label: "Budget and team", icon: ShieldCheck },
   { key: "review", label: "Review generated milestones", icon: Users },
@@ -59,11 +59,11 @@ export function ProjectWizard({ onDone }: { onDone: () => void }) {
     submitForApproval: true,
   });
 
-  const subholdings = useMemo<Subholding[]>(() => {
+  const departments = useMemo<Department[]>(() => {
     if (!user) return [];
-    const all = visibleSubholdings(state);
-    if (user.role === "subholding_admin" && user.subholdingId) {
-      return all.filter((s) => s.id === user.subholdingId);
+    const all = visibleDepartments(state);
+    if (user.role === "department_admin" && user.departmentId) {
+      return all.filter((s) => s.id === user.departmentId);
     }
     return all;
   }, [state, user]);
@@ -74,8 +74,8 @@ export function ProjectWizard({ onDone }: { onDone: () => void }) {
   );
 
   const projectOwners = useMemo(
-    () => state.users.filter((u) => u.role === "project_owner" && (!state2.subholdingId || u.subholdingId === state2.subholdingId)),
-    [state.users, state2.subholdingId],
+    () => state.users.filter((u) => u.role === "project_owner" && (!state2.departmentId || u.departmentId === state2.departmentId)),
+    [state.users, state2.departmentId],
   );
 
   const approvers = useMemo(
@@ -87,16 +87,16 @@ export function ProjectWizard({ onDone }: { onDone: () => void }) {
     () => templates.find((t) => t.id === state2.templateId),
     [templates, state2.templateId],
   );
-  const selectedSubholding = useMemo(
-    () => subholdings.find((s) => s.id === state2.subholdingId),
-    [subholdings, state2.subholdingId],
+  const selectedDepartment = useMemo(
+    () => departments.find((s) => s.id === state2.departmentId),
+    [departments, state2.departmentId],
   );
 
   if (!user || !canCreateProject(user)) {
     return (
       <Card className="p-6 text-center">
         <div className="text-sm font-medium">Access denied</div>
-        <div className="text-xs text-muted-foreground mt-1">Only Holding Admin and Subholding Admin can create projects.</div>
+        <div className="text-xs text-muted-foreground mt-1">Only Company Admin and Department Admin can create projects.</div>
         <div className="mt-3">
           <Button variant="outline" size="sm" onClick={onDone}>
             <ArrowLeft className="size-3.5" /> Back
@@ -107,7 +107,7 @@ export function ProjectWizard({ onDone }: { onDone: () => void }) {
   }
 
   const canAdvance = () => {
-    if (stepIndex === 0) return !!state2.subholdingId && !!state2.templateId;
+    if (stepIndex === 0) return !!state2.departmentId && !!state2.templateId;
     if (stepIndex === 1) return !!state2.name.trim() && !!state2.startDate && !!state2.targetCompletionDate;
     if (stepIndex === 2) return state2.approvedBudget > 0 && !!state2.ownerId && !!state2.approverUserId;
     return true;
@@ -122,7 +122,7 @@ export function ProjectWizard({ onDone }: { onDone: () => void }) {
   };
 
   const handleSubmit = (submitForApproval: boolean) => {
-    if (!user || !selectedTemplate || !state2.subholdingId || !state2.ownerId || !state2.approverUserId) {
+    if (!user || !selectedTemplate || !state2.departmentId || !state2.ownerId || !state2.approverUserId) {
       toast.error("Please complete the wizard");
       return;
     }
@@ -130,7 +130,7 @@ export function ProjectWizard({ onDone }: { onDone: () => void }) {
       toast.error("Target date must be after start date");
       return;
     }
-    const subholdingId = state2.subholdingId;
+    const departmentId = state2.departmentId;
     const ownerId = state2.ownerId;
     const approverUserId = state2.approverUserId;
     setState((s) =>
@@ -140,7 +140,7 @@ export function ProjectWizard({ onDone }: { onDone: () => void }) {
           template: selectedTemplate,
           name: state2.name,
           description: state2.description,
-          subholdingId,
+          departmentId,
           ownerId,
           approvedBudget: state2.approvedBudget,
           startDate: state2.startDate,
@@ -164,7 +164,7 @@ export function ProjectWizard({ onDone }: { onDone: () => void }) {
     <div className="space-y-6">
       <PageHeader
         title="Create new project"
-        description="Set up a new project step by step. Pick a subholding, choose a template, fill in the details, and review before saving."
+        description="Set up a new project step by step. Pick a department, choose a template, fill in the details, and review before saving."
         actions={
           <Button variant="outline" size="sm" onClick={onDone}>
             <ArrowLeft className="size-3.5" /> Back to projects
@@ -210,17 +210,17 @@ export function ProjectWizard({ onDone }: { onDone: () => void }) {
 
       {stepIndex === 0 ? (
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-          <SectionCard         title="Choose the subholding"
+          <SectionCard         title="Choose the department"
         description="Pick which business unit will own this project.">
             <div className="grid grid-cols-1 gap-2">
-              {subholdings.map((s) => (
+              {departments.map((s) => (
                 <button
                   key={s.id}
                   type="button"
-                  onClick={() => setWizard((prev) => ({ ...prev, subholdingId: s.id, ownerId: undefined }))}
+                  onClick={() => setWizard((prev) => ({ ...prev, departmentId: s.id, ownerId: undefined }))}
                   className={cn(
                     "flex items-center gap-3 p-3 rounded-sm ring-1 ring-inset text-left",
-                    state2.subholdingId === s.id
+                    state2.departmentId === s.id
                       ? "bg-primary/5 ring-primary/40"
                       : "ring-foreground/10 hover:bg-muted",
                   )}
@@ -234,8 +234,8 @@ export function ProjectWizard({ onDone }: { onDone: () => void }) {
                   </div>
                 </button>
               ))}
-              {subholdings.length === 0 ? (
-                <div className="text-xs text-muted-foreground">No subholdings available.</div>
+              {departments.length === 0 ? (
+                <div className="text-xs text-muted-foreground">No departments available.</div>
               ) : null}
             </div>
           </SectionCard>
@@ -359,19 +359,19 @@ export function ProjectWizard({ onDone }: { onDone: () => void }) {
                 </div>
               </div>
               <div>
-                <Label>Subholding annual allocation</Label>
+                <Label>Department annual allocation</Label>
                 <div className="text-sm text-foreground">
-                  {formatIDRBillions(selectedSubholding?.annualBudgetAllocation ?? 0)}
+                  {formatIDRBillions(selectedDepartment?.annualBudgetAllocation ?? 0)}
                 </div>
               </div>
               <ProgressBar
                 value={
-                  selectedSubholding && selectedSubholding.annualBudgetAllocation > 0
-                    ? state2.approvedBudget / selectedSubholding.annualBudgetAllocation
+                  selectedDepartment && selectedDepartment.annualBudgetAllocation > 0
+                    ? state2.approvedBudget / selectedDepartment.annualBudgetAllocation
                     : 0
                 }
                 tone="info"
-                label="Utilization of subholding allocation"
+                label="Utilization of department allocation"
               />
             </div>
           </SectionCard>
@@ -388,7 +388,7 @@ export function ProjectWizard({ onDone }: { onDone: () => void }) {
                   <option value="">Select a project owner</option>
                   {projectOwners.map((u) => (
                     <option key={u.id} value={u.id}>
-                      {u.name} · {u.subholdingId ? state.subholdings.find((s) => s.id === u.subholdingId)?.code : "—"}
+                      {u.name} · {u.departmentId ? state.departments.find((s) => s.id === u.departmentId)?.code : "—"}
                     </option>
                   ))}
                 </select>
@@ -484,8 +484,8 @@ export function ProjectWizard({ onDone }: { onDone: () => void }) {
         description="Check the project details before saving.">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
             <div>
-              <div className="text-muted-foreground">Subholding</div>
-              <div className="text-foreground font-medium">{selectedSubholding?.name ?? "—"}</div>
+              <div className="text-muted-foreground">Department</div>
+              <div className="text-foreground font-medium">{selectedDepartment?.name ?? "—"}</div>
             </div>
             <div>
               <div className="text-muted-foreground">Template</div>

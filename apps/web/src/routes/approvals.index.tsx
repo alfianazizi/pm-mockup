@@ -74,9 +74,9 @@ function ApprovalsPage() {
       },
     },
     {
-      key: "subholding",
-      header: "Subholding",
-      cell: (row) => state.subholdings.find((s) => s.id === row.subholdingId)?.code ?? "—",
+      key: "department",
+      header: "Department",
+      cell: (row) => state.departments.find((s) => s.id === row.departmentId)?.code ?? "—",
     },
     {
       key: "milestone",

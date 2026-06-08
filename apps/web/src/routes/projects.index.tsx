@@ -97,9 +97,9 @@ function ProjectsPage() {
       ),
     },
     {
-      key: "subholding",
-      header: "Subholding",
-      cell: (row) => state.subholdings.find((s) => s.id === row.subholdingId)?.name ?? "—",
+      key: "department",
+      header: "Department",
+      cell: (row) => state.departments.find((s) => s.id === row.departmentId)?.name ?? "—",
     },
     {
       key: "owner",
@@ -158,7 +158,7 @@ function ProjectsPage() {
               <Send className="size-3.5" /> Submit
             </Button>
           ) : null}
-          {user && user.role === "holding_admin" && !row.archivedAt ? (
+          {user && user.role === "company_admin" && !row.archivedAt ? (
             <Button
               variant="ghost"
               size="sm"

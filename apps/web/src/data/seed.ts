@@ -5,16 +5,16 @@ import type {
   Project,
   ProjectMilestone,
   ProjectTemplate,
-  Subholding,
+  Department,
 } from "../lib/domain";
 
 const YEAR = 2026;
 const ID = (prefix: string, n: number) => `${prefix}-${String(n).padStart(3, "0")}`;
 
-const subholdings: Subholding[] = [
+const departments: Department[] = [
   {
     id: "sub-energy",
-    name: "Energy Subholding",
+    name: "Energy Department",
     code: "ENG",
     sector: "Energy",
     status: "active",
@@ -23,7 +23,7 @@ const subholdings: Subholding[] = [
   },
   {
     id: "sub-infra",
-    name: "Infrastructure Subholding",
+    name: "Infrastructure Department",
     code: "INF",
     sector: "Infrastructure",
     status: "active",
@@ -32,7 +32,7 @@ const subholdings: Subholding[] = [
   },
   {
     id: "sub-property",
-    name: "Property Subholding",
+    name: "Property Department",
     code: "PRP",
     sector: "Property & Real Estate",
     status: "active",
@@ -41,7 +41,7 @@ const subholdings: Subholding[] = [
   },
   {
     id: "sub-logistics",
-    name: "Logistics Subholding",
+    name: "Logistics Department",
     code: "LOG",
     sector: "Logistics",
     status: "active",
@@ -50,7 +50,7 @@ const subholdings: Subholding[] = [
   },
   {
     id: "sub-digital",
-    name: "Digital Services Subholding",
+    name: "Digital Services Department",
     code: "DIG",
     sector: "Digital Services",
     status: "active",
@@ -66,7 +66,7 @@ const templates: ProjectTemplate[] = [
     category: "Infrastructure",
     version: "v1.2",
     description: "Civil infrastructure delivery: land, design, construction, commissioning, handover.",
-    defaultApproverRole: "subholding_admin",
+    defaultApproverRole: "department_admin",
     requiredAttachments: ["Environmental permit", "Land acquisition report", "Construction contract"],
     riskChecklist: ["Permit risk", "Land acquisition risk", "Weather risk", "Vendor performance"],
     status: "active",
@@ -81,12 +81,12 @@ const templates: ProjectTemplate[] = [
         order: 1,
         estimatedDurationDays: 90,
         approvalRequired: true,
-        approvalRole: "subholding_admin",
+        approvalRole: "department_admin",
         budgetCheckpoint: true,
         completionCriteria: "All land titles transferred and permits active.",
         steps: [
           { id: "tpl-infra-m1-s1", name: "Land survey", requiredAttachmentNames: ["Environmental permit", "Land acquisition report"], dueOffsetDays: 14, dependsOnPrevious: false, assignedRole: "Project Owner" },
-          { id: "tpl-infra-m1-s2", name: "Permit submission", requiredAttachmentNames: ["Environmental permit"], dueOffsetDays: 45, dependsOnPrevious: true, assignedRole: "Subholding Admin" },
+          { id: "tpl-infra-m1-s2", name: "Permit submission", requiredAttachmentNames: ["Environmental permit"], dueOffsetDays: 45, dependsOnPrevious: true, assignedRole: "Department Admin" },
         ],
       },
       {
@@ -96,7 +96,7 @@ const templates: ProjectTemplate[] = [
         order: 2,
         estimatedDurationDays: 75,
         approvalRequired: true,
-        approvalRole: "subholding_admin",
+        approvalRole: "department_admin",
         budgetCheckpoint: false,
         completionCriteria: "Detailed design approved by stakeholders.",
         steps: [
@@ -111,7 +111,7 @@ const templates: ProjectTemplate[] = [
         order: 3,
         estimatedDurationDays: 240,
         approvalRequired: true,
-        approvalRole: "holding_admin",
+        approvalRole: "company_admin",
         budgetCheckpoint: true,
         completionCriteria: "Construction complete and inspected.",
         steps: [
@@ -127,7 +127,7 @@ const templates: ProjectTemplate[] = [
         order: 4,
         estimatedDurationDays: 60,
         approvalRequired: true,
-        approvalRole: "holding_admin",
+        approvalRole: "company_admin",
         budgetCheckpoint: false,
         completionCriteria: "Asset handed over and operational.",
         steps: [
@@ -143,7 +143,7 @@ const templates: ProjectTemplate[] = [
     category: "IT",
     version: "v1.0",
     description: "Enterprise IT implementation: discovery, design, build, deploy, adoption.",
-    defaultApproverRole: "subholding_admin",
+    defaultApproverRole: "department_admin",
     requiredAttachments: ["System specification", "Security assessment", "User acceptance sign-off"],
     riskChecklist: ["Vendor risk", "Data migration risk", "Adoption risk", "Cyber risk"],
     status: "active",
@@ -158,12 +158,12 @@ const templates: ProjectTemplate[] = [
         order: 1,
         estimatedDurationDays: 30,
         approvalRequired: true,
-        approvalRole: "subholding_admin",
+        approvalRole: "department_admin",
         budgetCheckpoint: false,
         completionCriteria: "Requirements approved.",
         steps: [
           { id: "tpl-it-m1-s1", name: "Stakeholder workshops", requiredAttachmentNames: [], dueOffsetDays: 10, dependsOnPrevious: false, assignedRole: "Project Owner" },
-          { id: "tpl-it-m1-s2", name: "Requirements sign-off", requiredAttachmentNames: ["System specification"], dueOffsetDays: 25, dependsOnPrevious: true, assignedRole: "Subholding Admin" },
+          { id: "tpl-it-m1-s2", name: "Requirements sign-off", requiredAttachmentNames: ["System specification"], dueOffsetDays: 25, dependsOnPrevious: true, assignedRole: "Department Admin" },
         ],
       },
       {
@@ -173,7 +173,7 @@ const templates: ProjectTemplate[] = [
         order: 2,
         estimatedDurationDays: 90,
         approvalRequired: true,
-        approvalRole: "holding_admin",
+        approvalRole: "company_admin",
         budgetCheckpoint: true,
         completionCriteria: "System in production.",
         steps: [
@@ -190,7 +190,7 @@ const templates: ProjectTemplate[] = [
     category: "Facility",
     version: "v1.1",
     description: "Office or asset renovation covering assessment, design, construction, and handover.",
-    defaultApproverRole: "subholding_admin",
+    defaultApproverRole: "department_admin",
     requiredAttachments: ["Facility assessment report", "Construction contract"],
     riskChecklist: ["Occupancy risk", "Budget risk"],
     status: "active",
@@ -205,12 +205,12 @@ const templates: ProjectTemplate[] = [
         order: 1,
         estimatedDurationDays: 30,
         approvalRequired: true,
-        approvalRole: "subholding_admin",
+        approvalRole: "department_admin",
         budgetCheckpoint: false,
         completionCriteria: "Plan approved.",
         steps: [
           { id: "tpl-facility-m1-s1", name: "Site assessment", requiredAttachmentNames: ["Facility assessment report"], dueOffsetDays: 14, dependsOnPrevious: false, assignedRole: "Project Owner" },
-          { id: "tpl-facility-m1-s2", name: "Plan sign-off", requiredAttachmentNames: ["Facility assessment report"], dueOffsetDays: 25, dependsOnPrevious: true, assignedRole: "Subholding Admin" },
+          { id: "tpl-facility-m1-s2", name: "Plan sign-off", requiredAttachmentNames: ["Facility assessment report"], dueOffsetDays: 25, dependsOnPrevious: true, assignedRole: "Department Admin" },
         ],
       },
       {
@@ -220,7 +220,7 @@ const templates: ProjectTemplate[] = [
         order: 2,
         estimatedDurationDays: 90,
         approvalRequired: true,
-        approvalRole: "subholding_admin",
+        approvalRole: "department_admin",
         budgetCheckpoint: true,
         completionCriteria: "Renovation works complete.",
         steps: [
@@ -237,7 +237,7 @@ const users = [
     id: "user-001",
     name: "Andini Pratiwi",
     email: "andini.pratiwi@holding.id",
-    role: "holding_admin" as const,
+    role: "company_admin" as const,
     status: "active" as const,
     lastLogin: "2026-06-08 09:12",
     avatarColor: "#556ee6",
@@ -248,7 +248,7 @@ const users = [
     name: "Indah Cahyani",
     email: "indah.cahyani@infra.id",
     role: "project_owner" as const,
-    subholdingId: "sub-infra",
+    departmentId: "sub-infra",
     projectIds: ["p-001", "p-002"],
     status: "active" as const,
     lastLogin: "2026-06-08 09:50",
@@ -309,7 +309,7 @@ function snapshotMilestones(templateId: string, projectId: string, statusMix: "e
 
 const projectSeed: Array<{
   name: string;
-  subholdingId: string;
+  departmentId: string;
   templateId: string;
   ownerId: string;
   approvedBudget: number;
@@ -322,14 +322,14 @@ const projectSeed: Array<{
   actualSpendingRatio: number;
   committedRatio: number;
 }> = [
-  { name: "Tanjung Priok Port Expansion", subholdingId: "sub-infra", templateId: "tpl-infra", ownerId: "user-002", approvedBudget: 280, status: "active", startDate: `${YEAR}-01-10`, targetCompletionDate: `${YEAR}-12-20`, mix: "late", category: "Infrastructure", priority: "high", actualSpendingRatio: 0.82, committedRatio: 0.95 },
-  { name: "Bandung Smart Traffic System", subholdingId: "sub-infra", templateId: "tpl-it", ownerId: "user-002", approvedBudget: 32, status: "active", startDate: `${YEAR}-03-01`, targetCompletionDate: `${YEAR}-08-30`, mix: "early", category: "IT", priority: "medium", actualSpendingRatio: 0.18, committedRatio: 0.32 },
-  { name: "Cibinong Solar Farm Phase 2", subholdingId: "sub-energy", templateId: "tpl-infra", ownerId: "user-001", approvedBudget: 120, status: "active", startDate: `${YEAR}-01-15`, targetCompletionDate: `${YEAR}-09-30`, mix: "mid", category: "Infrastructure", priority: "high", actualSpendingRatio: 0.72, committedRatio: 0.85 },
-  { name: "Pekanbaru Grid Modernization", subholdingId: "sub-energy", templateId: "tpl-it", ownerId: "user-001", approvedBudget: 45, status: "active", startDate: `${YEAR}-02-01`, targetCompletionDate: `${YEAR}-07-30`, mix: "mid", category: "IT", priority: "high", actualSpendingRatio: 0.55, committedRatio: 0.7 },
-  { name: "Surabaya Mixed-Use Tower", subholdingId: "sub-property", templateId: "tpl-infra", ownerId: "user-001", approvedBudget: 180, status: "active", startDate: `${YEAR}-01-20`, targetCompletionDate: `${YEAR}-11-15`, mix: "mid", category: "Infrastructure", priority: "high", actualSpendingRatio: 0.68, committedRatio: 0.8 },
-  { name: "Jakarta HQ Office Renovation", subholdingId: "sub-property", templateId: "tpl-facility", ownerId: "user-001", approvedBudget: 24, status: "active", startDate: `${YEAR}-04-01`, targetCompletionDate: `${YEAR}-07-15`, mix: "early", category: "Facility", priority: "medium", actualSpendingRatio: 0.22, committedRatio: 0.4 },
-  { name: "East Java Distribution Center", subholdingId: "sub-logistics", templateId: "tpl-facility", ownerId: "user-001", approvedBudget: 65, status: "active", startDate: `${YEAR}-02-15`, targetCompletionDate: `${YEAR}-08-30`, mix: "mid", category: "Facility", priority: "high", actualSpendingRatio: 0.58, committedRatio: 0.7 },
-  { name: "Customer Data Platform Rollout", subholdingId: "sub-digital", templateId: "tpl-it", ownerId: "user-001", approvedBudget: 28, status: "active", startDate: `${YEAR}-02-01`, targetCompletionDate: `${YEAR}-06-30`, mix: "late", category: "IT", priority: "high", actualSpendingRatio: 0.82, committedRatio: 0.92 },
+  { name: "Tanjung Priok Port Expansion", departmentId: "sub-infra", templateId: "tpl-infra", ownerId: "user-002", approvedBudget: 280, status: "active", startDate: `${YEAR}-01-10`, targetCompletionDate: `${YEAR}-12-20`, mix: "late", category: "Infrastructure", priority: "high", actualSpendingRatio: 0.82, committedRatio: 0.95 },
+  { name: "Bandung Smart Traffic System", departmentId: "sub-infra", templateId: "tpl-it", ownerId: "user-002", approvedBudget: 32, status: "active", startDate: `${YEAR}-03-01`, targetCompletionDate: `${YEAR}-08-30`, mix: "early", category: "IT", priority: "medium", actualSpendingRatio: 0.18, committedRatio: 0.32 },
+  { name: "Cibinong Solar Farm Phase 2", departmentId: "sub-energy", templateId: "tpl-infra", ownerId: "user-001", approvedBudget: 120, status: "active", startDate: `${YEAR}-01-15`, targetCompletionDate: `${YEAR}-09-30`, mix: "mid", category: "Infrastructure", priority: "high", actualSpendingRatio: 0.72, committedRatio: 0.85 },
+  { name: "Pekanbaru Grid Modernization", departmentId: "sub-energy", templateId: "tpl-it", ownerId: "user-001", approvedBudget: 45, status: "active", startDate: `${YEAR}-02-01`, targetCompletionDate: `${YEAR}-07-30`, mix: "mid", category: "IT", priority: "high", actualSpendingRatio: 0.55, committedRatio: 0.7 },
+  { name: "Surabaya Mixed-Use Tower", departmentId: "sub-property", templateId: "tpl-infra", ownerId: "user-001", approvedBudget: 180, status: "active", startDate: `${YEAR}-01-20`, targetCompletionDate: `${YEAR}-11-15`, mix: "mid", category: "Infrastructure", priority: "high", actualSpendingRatio: 0.68, committedRatio: 0.8 },
+  { name: "Jakarta HQ Office Renovation", departmentId: "sub-property", templateId: "tpl-facility", ownerId: "user-001", approvedBudget: 24, status: "active", startDate: `${YEAR}-04-01`, targetCompletionDate: `${YEAR}-07-15`, mix: "early", category: "Facility", priority: "medium", actualSpendingRatio: 0.22, committedRatio: 0.4 },
+  { name: "East Java Distribution Center", departmentId: "sub-logistics", templateId: "tpl-facility", ownerId: "user-001", approvedBudget: 65, status: "active", startDate: `${YEAR}-02-15`, targetCompletionDate: `${YEAR}-08-30`, mix: "mid", category: "Facility", priority: "high", actualSpendingRatio: 0.58, committedRatio: 0.7 },
+  { name: "Customer Data Platform Rollout", departmentId: "sub-digital", templateId: "tpl-it", ownerId: "user-001", approvedBudget: 28, status: "active", startDate: `${YEAR}-02-01`, targetCompletionDate: `${YEAR}-06-30`, mix: "late", category: "IT", priority: "high", actualSpendingRatio: 0.82, committedRatio: 0.92 },
 ];
 
 const projects: Project[] = projectSeed.map((p, i) => {
@@ -381,7 +381,7 @@ const projects: Project[] = projectSeed.map((p, i) => {
     id: ID("p", i + 1),
     name: p.name,
     description: `${p.name} is executed under ${tpl.name}.`,
-    subholdingId: p.subholdingId,
+    departmentId: p.departmentId,
     templateId: p.templateId,
     templateName: tpl.name,
     templateVersion: tpl.version,
@@ -413,7 +413,7 @@ const approvals: ApprovalRequest[] = (() => {
           id: ID("apr", counter++),
           type: "milestone_approval",
           projectId: project.id,
-          subholdingId: project.subholdingId,
+          departmentId: project.departmentId,
           milestoneId: milestone.id,
           requestedBy: project.ownerId,
           approverUserId: approver,
@@ -434,11 +434,11 @@ const approvals: ApprovalRequest[] = (() => {
 })();
 
 export const seedState: AppState = {
-  version: 3,
+  version: 4,
   globalYear: YEAR,
   globalPeriod: "quarterly",
   globalQuarter: "Q2",
-  subholdings,
+  departments,
   users: users as unknown as AppState["users"],
   templates,
   projects,
@@ -446,6 +446,6 @@ export const seedState: AppState = {
   reports: [
     { id: "rpt-1", name: "Quarterly Project Performance Report", period: "quarterly", description: "Project status, milestones, and risk distribution per quarter.", lastGenerated: "2026-04-05", format: "PDF/Excel" },
     { id: "rpt-2", name: "Semester Budget Utilization Report", period: "semesterly", description: "Approved budget, actual spending, and variance per semester.", lastGenerated: "2026-04-05", format: "PDF/Excel" },
-    { id: "rpt-3", name: "Annual Portfolio Summary", period: "annually", description: "Full portfolio status, completion rate, and ROI by subholding.", lastGenerated: "2026-01-30", format: "PDF/Excel" },
+    { id: "rpt-3", name: "Annual Portfolio Summary", period: "annually", description: "Full portfolio status, completion rate, and ROI by department.", lastGenerated: "2026-01-30", format: "PDF/Excel" },
   ],
 };

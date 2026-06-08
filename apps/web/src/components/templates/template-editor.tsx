@@ -22,15 +22,15 @@ import { getCurrentUser } from "@/lib/selectors";
 import { toast } from "sonner";
 
 const APPROVER_ROLES = [
-  "holding_admin",
-  "subholding_admin",
+  "company_admin",
+  "department_admin",
   "project_owner",
   "approver",
 ];
 
 const APPROVER_LABELS: Record<string, string> = {
-  holding_admin: "Holding Admin",
-  subholding_admin: "Subholding Admin",
+  company_admin: "Company Admin",
+  subcompany_admin: "Department Admin",
   project_owner: "Project Owner",
   approver: "Approver",
 };
@@ -45,7 +45,7 @@ function blankTemplate(): ProjectTemplate {
     category: PROJECT_CATEGORIES[0],
     description: "",
     version: "v0.1",
-    defaultApproverRole: "subholding_admin",
+    defaultApproverRole: "department_admin",
     requiredAttachments: [],
     riskChecklist: [],
     status: "active",
@@ -170,7 +170,7 @@ export function TemplateEditor({ templateId, onDone }: { templateId?: string; on
       return;
     }
     if (!canEdit) {
-      toast.error("Only Holding Admin can edit templates");
+      toast.error("Only Company Admin can edit templates");
       return;
     }
     const next: ProjectTemplate = {
@@ -186,7 +186,7 @@ export function TemplateEditor({ templateId, onDone }: { templateId?: string; on
     return (
       <Card className="p-6 text-center">
         <div className="text-sm font-medium">Access denied</div>
-        <div className="text-xs text-muted-foreground mt-1">Only Holding Admin can edit Project Templates.</div>
+        <div className="text-xs text-muted-foreground mt-1">Only Company Admin can edit Project Templates.</div>
         <div className="mt-3">
           <Button variant="outline" size="sm" onClick={onDone}>
             <ArrowLeft className="size-3.5" /> Back
@@ -471,7 +471,7 @@ export function TemplateEditor({ templateId, onDone }: { templateId?: string; on
                           <Label>Approval role</Label>
                           <select
                             className="h-8 w-full text-xs border border-input bg-card px-2 rounded-none"
-                            value={milestone.approvalRole ?? "subholding_admin"}
+                            value={milestone.approvalRole ?? "department_admin"}
                             onChange={(e) => updateMilestone(milestone.id, { approvalRole: e.target.value })}
                           >
                             {APPROVER_ROLES.map((r) => (

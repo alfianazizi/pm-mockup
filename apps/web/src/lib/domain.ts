@@ -1,17 +1,17 @@
 export type Role =
-  | "holding_admin"
-  | "holding_executive"
+  | "company_admin"
+  | "company_executive"
   | "finance_controller"
-  | "subholding_admin"
+  | "department_admin"
   | "project_owner"
   | "approver"
   | "viewer";
 
 export const ROLE_LABELS: Record<Role, string> = {
-  holding_admin: "Holding Admin",
-  holding_executive: "Holding Executive",
+  company_admin: "Company Admin",
+  company_executive: "Company Executive",
   finance_controller: "Finance Controller",
-  subholding_admin: "Subholding Admin",
+  department_admin: "Department Admin",
   project_owner: "Project Owner",
   approver: "Approver",
   viewer: "Viewer",
@@ -165,7 +165,7 @@ export const SEMESTER_LABELS: Record<Semester, string> = {
   S2: "S2 (Jul-Dec)",
 };
 
-export interface Subholding {
+export interface Department {
   id: string;
   name: string;
   code: string;
@@ -181,7 +181,7 @@ export interface DemoUser {
   name: string;
   email: string;
   role: Role;
-  subholdingId?: string;
+  departmentId?: string;
   projectIds?: string[];
   approvalRequestIds?: string[];
   status: "active" | "inactive";
@@ -294,7 +294,7 @@ export interface Project {
   id: string;
   name: string;
   description: string;
-  subholdingId: string;
+  departmentId: string;
   templateId: string;
   templateName: string;
   templateVersion: string;
@@ -320,7 +320,7 @@ export interface ApprovalRequest {
   id: string;
   type: ApprovalType;
   projectId: string;
-  subholdingId: string;
+  departmentId: string;
   milestoneId?: string;
   requestedBy: string;
   approverUserId: string;
@@ -345,12 +345,12 @@ export interface ReportCard {
 export interface AppState {
   version: number;
   currentUserId?: string;
-  globalSubholdingId?: string;
+  globalDepartmentId?: string;
   globalYear: number;
   globalPeriod: Period;
   globalQuarter?: Quarter;
   globalSemester?: Semester;
-  subholdings: Subholding[];
+  departments: Department[];
   users: DemoUser[];
   templates: ProjectTemplate[];
   projects: Project[];

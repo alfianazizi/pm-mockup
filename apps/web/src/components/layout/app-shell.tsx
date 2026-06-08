@@ -6,7 +6,7 @@ import { X } from "lucide-react";
 import { cn } from "@project-management-mockup/ui/lib/utils";
 
 import { useAppState } from "@/lib/app-state";
-import { getCurrentUser, visibleSubholdings } from "@/lib/selectors";
+import { getCurrentUser, visibleDepartments } from "@/lib/selectors";
 import { canAccessMenu } from "@/lib/permissions";
 
 import { GlobalFilters } from "./global-filters";
@@ -16,7 +16,7 @@ import { Topbar } from "./topbar";
 export function AppShell({ children }: { children: ReactNode }) {
   const { state } = useAppState();
   const user = getCurrentUser(state);
-  const subholdings = visibleSubholdings(state);
+  const departments = visibleDepartments(state);
   const location = useLocation();
   const [mobileOpen, setMobileOpen] = useState(false);
 
@@ -31,7 +31,7 @@ export function AppShell({ children }: { children: ReactNode }) {
       <Sidebar items={items} currentPath={location.pathname} />
       <div className="flex-1 flex flex-col min-w-0">
         <Topbar user={user} onOpenMobileNav={() => setMobileOpen(true)} />
-        <GlobalFilters user={user} subholdings={subholdings} />
+        <GlobalFilters user={user} departments={departments} />
         <main className="flex-1 overflow-y-auto scrollbar-thin">
           <div className="px-3 md:px-4 py-4 md:py-6 max-w-[1600px] mx-auto">{children}</div>
         </main>
@@ -45,7 +45,7 @@ export function AppShell({ children }: { children: ReactNode }) {
                 <div className="size-7 rounded-sm bg-primary text-primary-foreground flex items-center justify-center text-xs font-bold">
                   PH
                 </div>
-                <span className="text-sm font-semibold">Pratama Holding</span>
+                <span className="text-sm font-semibold">Pratama Company</span>
               </div>
               <button
                 type="button"

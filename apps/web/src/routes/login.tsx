@@ -31,7 +31,7 @@ function LoginPage() {
               PH
             </div>
             <div>
-              <div className="text-sm font-semibold">Pratama Holding</div>
+              <div className="text-sm font-semibold">Pratama Company</div>
               <div className="text-[11px] text-sidebar-muted uppercase tracking-wide">PMO Console</div>
             </div>
           </div>
@@ -42,7 +42,7 @@ function LoginPage() {
             <p className="text-sm text-sidebar-muted">
               Sign in as a demo user to walk through the project lifecycle and the template
               library that powers it. The Project Owner is scoped to assigned projects; the
-              Holding Admin can manage templates and approve work.
+              Company Admin can manage templates and approve work.
             </p>
             <div className="grid grid-cols-1 gap-3">
               <div className="flex items-start gap-3">
@@ -90,7 +90,7 @@ function LoginPage() {
               PH
             </div>
             <div>
-              <div className="text-sm font-semibold">Pratama Holding</div>
+              <div className="text-sm font-semibold">Pratama Company</div>
               <div className="text-[11px] text-muted-foreground uppercase tracking-wide">PMO Console</div>
             </div>
           </div>
@@ -103,7 +103,7 @@ function LoginPage() {
             </div>
             <div className="mt-6 grid sm:grid-cols-2 gap-4">
               {state.users.map((user) => {
-                const subholding = state.subholdings.find((s) => s.id === user.subholdingId);
+                const department = state.departments.find((s) => s.id === user.departmentId);
                 return (
                   <Card key={user.id} className="hover:ring-primary/40 transition-shadow">
                     <CardHeader>
@@ -125,14 +125,14 @@ function LoginPage() {
                         <div>
                           Role: <span className="text-foreground font-medium">{ROLE_LABELS[user.role]}</span>
                         </div>
-                        {subholding ? (
+                        {department ? (
                           <div>
-                            Subholding:{" "}
-                            <span className="text-foreground font-medium">{subholding.name}</span>
+                            Department:{" "}
+                            <span className="text-foreground font-medium">{department.name}</span>
                           </div>
                         ) : (
                           <div>
-                            Scope: <span className="text-foreground font-medium">Holding-wide</span>
+                            Scope: <span className="text-foreground font-medium">Company-wide</span>
                           </div>
                         )}
                         {user.projectIds?.length ? (

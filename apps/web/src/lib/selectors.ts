@@ -9,49 +9,49 @@ import type {
   RiskLevel,
   Semester,
   SpendingRecord,
-  Subholding,
+  Department,
 } from "./domain";
-import { isHoldingWide } from "./permissions";
+import { isCompanyWide } from "./permissions";
 
 export function getCurrentUser(state: { users: DemoUser[]; currentUserId?: string }): DemoUser | undefined {
   if (!state.currentUserId) return undefined;
   return state.users.find((u) => u.id === state.currentUserId);
 }
 
-export function visibleSubholdings(state: {
-  subholdings: Subholding[];
+export function visibleDepartments(state: {
+  departments: Department[];
   users: DemoUser[];
   currentUserId?: string;
-}): Subholding[] {
+}): Department[] {
   const user = getCurrentUser(state);
   if (!user) return [];
-  const active = state.subholdings.filter((s) => !s.archivedAt);
-  if (isHoldingWide(user)) return active;
-  if (user.subholdingId) return active.filter((s) => s.id === user.subholdingId);
+  const active = state.departments.filter((s) => !s.archivedAt);
+  if (isCompanyWide(user)) return active;
+  if (user.departmentId) return active.filter((s) => s.id === user.departmentId);
   return active;
 }
 
 export function scopedProjects(state: {
   projects: Project[];
-  subholdings: Subholding[];
+  departments: Department[];
   users: DemoUser[];
   currentUserId?: string;
-  globalSubholdingId?: string;
+  globalDepartmentId?: string;
 }): Project[] {
   const user = getCurrentUser(state);
   if (!user) return [];
   const all = state.projects.filter((p) => !p.archivedAt);
-  const bySubholding = state.globalSubholdingId
-    ? all.filter((p) => p.subholdingId === state.globalSubholdingId)
+  const byDepartment = state.globalDepartmentId
+    ? all.filter((p) => p.departmentId === state.globalDepartmentId)
     : all;
-  if (user.role === "holding_admin" || user.role === "holding_executive" || user.role === "finance_controller") {
-    return bySubholding;
+  if (user.role === "company_admin" || user.role === "company_executive" || user.role === "finance_controller") {
+    return byDepartment;
   }
-  if (user.role === "subholding_admin") {
-    return bySubholding.filter((p) => p.subholdingId === user.subholdingId);
+  if (user.role === "department_admin") {
+    return byDepartment.filter((p) => p.departmentId === user.departmentId);
   }
   if (user.role === "project_owner" || user.role === "viewer") {
-    return bySubholding.filter((p) => user.projectIds?.includes(p.id));
+    return byDepartment.filter((p) => user.projectIds?.includes(p.id));
   }
   if (user.role === "approver") {
     const projectIds = new Set(
@@ -59,9 +59,9 @@ export function scopedProjects(state: {
         .filter((p) => p.ownerId === user.id)
         .map((p) => p.id),
     );
-    return bySubholding.filter((p) => projectIds.has(p.id));
+    return byDepartment.filter((p) => projectIds.has(p.id));
   }
-  return bySubholding;
+  return byDepartment;
 }
 
 export function scopedApprovals(state: {
@@ -71,14 +71,14 @@ export function scopedApprovals(state: {
 }): ApprovalRequest[] {
   const user = getCurrentUser(state);
   if (!user) return [];
-  if (user.role === "holding_admin" || user.role === "holding_executive" || user.role === "finance_controller") {
+  if (user.role === "company_admin" || user.role === "company_executive" || user.role === "finance_controller") {
     return state.approvals;
   }
   if (user.role === "approver") {
     return state.approvals.filter((a) => a.approverUserId === user.id);
   }
-  if (user.role === "subholding_admin") {
-    return state.approvals.filter((a) => a.subholdingId === user.subholdingId);
+  if (user.role === "department_admin") {
+    return state.approvals.filter((a) => a.departmentId === user.departmentId);
   }
   if (user.role === "project_owner") {
     return state.approvals.filter((a) => a.requestedBy === user.id);
@@ -146,8 +146,8 @@ export function approvalTone(status: ApprovalStatus): "warning" | "success" | "d
   }
 }
 
-export function totalBudgetAllocation(subholdings: Subholding[]): number {
-  return subholdings.reduce((acc, s) => acc + s.annualBudgetAllocation, 0);
+export function totalBudgetAllocation(departments: Department[]): number {
+  return departments.reduce((acc, s) => acc + s.annualBudgetAllocation, 0);
 }
 
 export function totalSpending(projects: Project[]): number {
@@ -158,8 +158,8 @@ export function totalCommittedCost(projects: Project[]): number {
   return projects.reduce((acc, p) => acc + p.committedCost, 0);
 }
 
-export function subholdingPerformance(subholding: Subholding, projects: Project[]) {
-  const subs = projects.filter((p) => p.subholdingId === subholding.id);
+export function departmentPerformance(department: Department, projects: Project[]) {
+  const subs = projects.filter((p) => p.departmentId === department.id);
   const approved = subs.reduce((acc, p) => acc + p.approvedBudget, 0);
   const spending = subs.reduce((acc, p) => acc + p.actualSpending, 0);
   const committed = subs.reduce((acc, p) => acc + p.committedCost, 0);
@@ -168,7 +168,7 @@ export function subholdingPerformance(subholding: Subholding, projects: Project[
   const completed = subs.filter((p) => p.status === "completed").length;
   const awaiting = subs.filter((p) => p.status === "waiting_approval").length;
   return {
-    subholding,
+    department,
     projects: subs,
     approved,
     spending,

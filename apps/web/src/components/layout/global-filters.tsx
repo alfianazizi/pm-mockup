@@ -5,9 +5,9 @@ import { Button } from "@project-management-mockup/ui/components/button";
 import { cn } from "@project-management-mockup/ui/lib/utils";
 
 import { useAppState } from "@/lib/app-state";
-import { setGlobalPeriod, setGlobalSubholding } from "@/lib/actions";
-import type { DemoUser, Subholding } from "@/lib/domain";
-import { isHoldingWide } from "@/lib/permissions";
+import { setGlobalPeriod, setGlobalDepartment } from "@/lib/actions";
+import type { DemoUser, Department } from "@/lib/domain";
+import { isCompanyWide } from "@/lib/permissions";
 import {
   QUARTER_LABELS,
   SEMESTER_LABELS,
@@ -19,10 +19,10 @@ const YEARS = [2026, 2025, 2024];
 
 type Period = "quarterly" | "semesterly" | "annually";
 
-export function GlobalFilters({ user, subholdings }: { user: DemoUser; subholdings: Subholding[] }) {
+export function GlobalFilters({ user, departments }: { user: DemoUser; departments: Department[] }) {
   const { state, setState } = useAppState();
-  const showSubholding = isHoldingWide(user);
-  const activeSubholding = subholdings.find((s) => s.id === state.globalSubholdingId);
+  const showDepartment = isCompanyWide(user);
+  const activeDepartment = departments.find((s) => s.id === state.globalDepartmentId);
   const quarter = state.globalQuarter ?? "Q1";
   const semester = state.globalSemester ?? "S1";
 
@@ -33,22 +33,22 @@ export function GlobalFilters({ user, subholdings }: { user: DemoUser; subholdin
         <span className="font-medium uppercase tracking-wide text-[10px]">Reporting scope</span>
       </div>
 
-      {showSubholding ? (
+      {showDepartment ? (
         <FilterPopover
-          label={activeSubholding ? activeSubholding.name : "All subholdings"}
-          title="Subholding"
+          label={activeDepartment ? activeDepartment.name : "All departments"}
+          title="Department"
           minWidthClass="min-w-56"
         >
           <FilterOption
-            active={!state.globalSubholdingId}
-            onSelect={() => setState((s) => setGlobalSubholding(s, undefined))}
-            label="All subholdings"
+            active={!state.globalDepartmentId}
+            onSelect={() => setState((s) => setGlobalDepartment(s, undefined))}
+            label="All departments"
           />
-          {subholdings.map((s) => (
+          {departments.map((s) => (
             <FilterOption
               key={s.id}
-              active={state.globalSubholdingId === s.id}
-              onSelect={() => setState((prev) => setGlobalSubholding(prev, s.id))}
+              active={state.globalDepartmentId === s.id}
+              onSelect={() => setState((prev) => setGlobalDepartment(prev, s.id))}
               label={s.name}
             />
           ))}
@@ -137,13 +137,13 @@ export function GlobalFilters({ user, subholdings }: { user: DemoUser; subholdin
         ) : null}
       </FilterPopover>
 
-      {(state.globalSubholdingId || state.globalPeriod !== "quarterly" || state.globalYear !== 2026) ? (
+      {(state.globalDepartmentId || state.globalPeriod !== "quarterly" || state.globalYear !== 2026) ? (
         <Button
           variant="ghost"
           size="sm"
           onClick={() => {
             setState((s) =>
-              setGlobalPeriod(setGlobalSubholding(s, undefined), "quarterly", 2026, "Q2", undefined),
+              setGlobalPeriod(setGlobalDepartment(s, undefined), "quarterly", 2026, "Q2", undefined),
             );
           }}
         >

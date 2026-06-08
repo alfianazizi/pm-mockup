@@ -92,9 +92,9 @@ function ProjectDetailPage() {
   const [tab, setTab] = useState<TabKey>("overview");
 
   const project = useMemo(() => state.projects.find((p) => p.id === projectId), [state.projects, projectId]);
-  const subholding = useMemo(
-    () => (project ? state.subholdings.find((s) => s.id === project.subholdingId) : undefined),
-    [state.subholdings, project],
+  const department = useMemo(
+    () => (project ? state.departments.find((s) => s.id === project.departmentId) : undefined),
+    [state.departments, project],
   );
   const owner = useMemo(
     () => (project ? state.users.find((u) => u.id === project.ownerId) : undefined),
@@ -130,7 +130,7 @@ function ProjectDetailPage() {
     <div className="space-y-6">
       <PageHeader
         title={project.name}
-        description={`${subholding?.name ?? "—"} · ${project.category} · Template: ${project.templateName} (${project.templateVersion})`}
+        description={`${department?.name ?? "—"} · ${project.category} · Template: ${project.templateName} (${project.templateVersion})`}
         actions={
           <div className="flex items-center gap-2">
             <LinkButton variant="outline" size="sm" to="/projects">
@@ -213,8 +213,8 @@ function ProjectDetailPage() {
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
               <div>
-                <div className="text-muted-foreground">Subholding</div>
-                <div className="text-foreground font-medium">{subholding?.name ?? "—"}</div>
+                <div className="text-muted-foreground">Department</div>
+                <div className="text-foreground font-medium">{department?.name ?? "—"}</div>
               </div>
               <div>
                 <div className="text-muted-foreground">Project owner</div>

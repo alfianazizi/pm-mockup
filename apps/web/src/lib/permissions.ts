@@ -1,4 +1,4 @@
-import type { DemoUser, Project, Role, Subholding } from "./domain";
+import type { DemoUser, Project, Role, Department } from "./domain";
 
 export interface AccessResult {
   allowed: boolean;
@@ -6,13 +6,13 @@ export interface AccessResult {
 }
 
 const menuByRole: Record<Role, string[]> = {
-  holding_admin: [
+  company_admin: [
     "dashboard",
     "templates",
     "projects",
     "approvals",
   ],
-  holding_executive: [
+  company_executive: [
     "dashboard",
     "projects",
     "approvals",
@@ -21,7 +21,7 @@ const menuByRole: Record<Role, string[]> = {
     "dashboard",
     "approvals",
   ],
-  subholding_admin: [
+  department_admin: [
     "dashboard",
     "templates",
     "projects",
@@ -51,7 +51,7 @@ const focusMenuKeys = new Set([
 ]);
 
 const outOfFocusRoutes = new Set([
-  "/subholdings",
+  "/departments",
   "/budget-monitoring",
   "/reports",
   "/users",
@@ -84,7 +84,7 @@ export function canAccessRoute(user: DemoUser | undefined, route: string): Acces
 
 function routeKey(route: string): string | null {
   if (route.startsWith("/dashboard")) return "dashboard";
-  if (route.startsWith("/subholdings")) return "subholdings";
+  if (route.startsWith("/departments")) return "departments";
   if (route.startsWith("/templates")) return "templates";
   if (route.startsWith("/projects")) return "projects";
   if (route.startsWith("/budget-monitoring")) return "budget-monitoring";
@@ -95,35 +95,35 @@ function routeKey(route: string): string | null {
   return null;
 }
 
-export function isHoldingWide(user: DemoUser | undefined): boolean {
+export function isCompanyWide(user: DemoUser | undefined): boolean {
   if (!user) return false;
   return (
-    user.role === "holding_admin" ||
-    user.role === "holding_executive" ||
+    user.role === "company_admin" ||
+    user.role === "company_executive" ||
     user.role === "finance_controller"
   );
 }
 
 export function canEditTemplateLibrary(user: DemoUser | undefined): boolean {
-  return user?.role === "holding_admin";
+  return user?.role === "company_admin";
 }
 
 export function canCreateProject(user: DemoUser | undefined): boolean {
   if (!user) return false;
-  return user.role === "holding_admin" || user.role === "subholding_admin";
+  return user.role === "company_admin" || user.role === "department_admin";
 }
 
 export function canManageProject(user: DemoUser | undefined, project: Project | undefined): boolean {
   if (!user || !project) return false;
-  if (user.role === "holding_admin") return true;
-  if (user.role === "subholding_admin") return user.subholdingId === project.subholdingId;
+  if (user.role === "company_admin") return true;
+  if (user.role === "department_admin") return user.departmentId === project.departmentId;
   if (user.role === "project_owner") return user.projectIds?.includes(project.id) ?? false;
   return false;
 }
 
-export function visibleSubholdingIds(user: DemoUser | undefined, all: Subholding[]): string[] | "all" {
+export function visibleDepartmentIds(user: DemoUser | undefined, all: Department[]): string[] | "all" {
   if (!user) return [];
-  if (isHoldingWide(user)) return "all";
-  if (user.subholdingId) return [user.subholdingId];
+  if (isCompanyWide(user)) return "all";
+  if (user.departmentId) return [user.departmentId];
   return all.map((s) => s.id);
 }

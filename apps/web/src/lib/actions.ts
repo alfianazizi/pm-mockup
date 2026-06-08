@@ -42,8 +42,8 @@ export function logout(state: AppState): AppState {
   return setField(state, "currentUserId", undefined);
 }
 
-export function setGlobalSubholding(state: AppState, subholdingId: string | undefined): AppState {
-  return setField(state, "globalSubholdingId", subholdingId);
+export function setGlobalDepartment(state: AppState, departmentId: string | undefined): AppState {
+  return setField(state, "globalDepartmentId", departmentId);
 }
 
 export function setGlobalPeriod(
@@ -68,7 +68,7 @@ export function createProjectFromTemplate(
     template: ProjectTemplate;
     name: string;
     description: string;
-    subholdingId: string;
+    departmentId: string;
     ownerId: string;
     approvedBudget: number;
     startDate: string;
@@ -89,7 +89,7 @@ export function createProjectFromTemplate(
     id: projectId,
     name: params.name,
     description: params.description,
-    subholdingId: params.subholdingId,
+    departmentId: params.departmentId,
     templateId: params.template.id,
     templateName: params.template.name,
     templateVersion: params.template.version,
@@ -136,7 +136,7 @@ export function createProjectFromTemplate(
             id: newId("apr"),
             type: "project_approval",
             projectId: project.id,
-            subholdingId: project.subholdingId,
+            departmentId: project.departmentId,
             requestedBy: currentUser.id,
             approverUserId: params.approverUserId,
             status: "pending",
@@ -201,7 +201,7 @@ export function submitProjectForApproval(state: AppState, projectId: string, cur
         id: newId("apr"),
         type: "project_approval",
         projectId,
-        subholdingId: s.projects.find((p) => p.id === projectId)?.subholdingId ?? "",
+        departmentId: s.projects.find((p) => p.id === projectId)?.departmentId ?? "",
         requestedBy: currentUser.id,
         approverUserId,
         status: "pending",
@@ -275,7 +275,7 @@ export function submitMilestoneForApproval(
         id: newId("apr"),
         type: "milestone_approval",
         projectId,
-        subholdingId: s.projects.find((p) => p.id === projectId)?.subholdingId ?? "",
+        departmentId: s.projects.find((p) => p.id === projectId)?.departmentId ?? "",
         milestoneId,
         requestedBy: currentUser.id,
         approverUserId,
@@ -427,14 +427,14 @@ export function archiveProject(state: AppState, projectId: string, currentUser: 
   }));
 }
 
-export function archiveSubholding(state: AppState, subholdingId: string, currentUser: DemoUser): AppState {
+export function archiveDepartment(state: AppState, departmentId: string, currentUser: DemoUser): AppState {
   return commit(state, (s) => ({
     ...s,
-    subholdings: s.subholdings.map((sh) =>
-      sh.id === subholdingId ? { ...sh, archivedAt: new Date().toISOString() } : sh,
+    departments: s.departments.map((department) =>
+      department.id === departmentId ? { ...department, archivedAt: new Date().toISOString() } : department,
     ),
     users: s.users.map((u) =>
-      u.subholdingId === subholdingId ? u : u,
+      u.departmentId === departmentId ? u : u,
     ),
   }));
 }

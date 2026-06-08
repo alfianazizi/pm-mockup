@@ -2,25 +2,25 @@
 
 This project was created with [Better-T-Stack](https://github.com/AmanVarshney01/create-better-t-stack), a modern TypeScript stack that combines React, TanStack Router, and more.
 
-## Pratama Holding PMO Prototype
+## Pratama Company PMO Prototype
 
-A frontend-only project management and budget monitoring dashboard for a holding company. The prototype uses mock data persisted in `localStorage` so stakeholders can click through the full flow and see scoped role-based behaviour.
+A frontend-only project management and budget monitoring dashboard for a company. The prototype uses mock data persisted in `localStorage` so stakeholders can click through the full flow and see scoped role-based behaviour.
 
 ### Demo personas
 
-The login page lists named demo users that cover every role: Holding Admin, Holding Executive, Finance Controller, Subholding Admin, Project Owner, Approver, and Viewer. Pick any card to sign in.
+The login page lists named demo users that cover every role: Company Admin, Company Executive, Finance Controller, Department Admin, Project Owner, Approver, and Viewer. Pick any card to sign in.
 
 ### Deepest flows
 
-- **Project Templates**: Holding Admin can create, edit, duplicate, and archive global templates. Each template has dynamic milestones, steps, attachment requirements, completion criteria, default approver role, and risk checklist.
-- **Project Wizard**: Five-step wizard (subholding and template, project details, budget and team, review generated milestones, save or submit) that snapshots the template into a project.
+- **Project Templates**: Company Admin can create, edit, duplicate, and archive global templates. Each template has dynamic milestones, steps, attachment requirements, completion criteria, default approver role, and risk checklist.
+- **Project Wizard**: Five-step wizard (department and template, project details, budget and team, review generated milestones, save or submit) that snapshots the template into a project.
 - **Project Detail**: Tabs for Overview, Budget, Milestones, Approvals, Attachments, and Activity Log. Step completion rolls up into milestone and project progress.
 - **Approvals**: Project and milestone approval requests are interactive for the assigned approver. Rejection and revision flows change milestone/project state.
 
 ### Supporting modules
 
-- Dashboard with holding-wide and per-subholding metrics and Recharts visualisations.
-- Subholding list and detail pages with portfolio rollups.
+- Dashboard with company-wide and per-department metrics and Recharts visualisations.
+- Department list and detail pages with portfolio rollups.
 - Budget Monitoring page with real Recharts, utilization, variance, and over-budget tracking.
 - Reports, Users, and Settings are presentational but cover the spec.
 
