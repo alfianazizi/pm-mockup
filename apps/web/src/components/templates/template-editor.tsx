@@ -137,7 +137,7 @@ export function TemplateEditor({ templateId, onDone }: { templateId?: string; on
               ...m,
               steps: [
                 ...m.steps,
-                { id, name: `Step ${m.steps.length + 1}`, requiredAttachment: false, dependsOnPrevious: m.steps.length > 0, dueOffsetDays: 7 },
+                { id, name: `Step ${m.steps.length + 1}`, requiredAttachmentNames: [], dependsOnPrevious: m.steps.length > 0, dueOffsetDays: 7 },
               ],
             }
           : m,
@@ -506,45 +506,76 @@ export function TemplateEditor({ templateId, onDone }: { templateId?: string; on
                             <div
                               key={step.id}
                               className={cn(
-                                "grid grid-cols-1 md:grid-cols-5 gap-2 items-center p-2 rounded-sm ring-1 ring-inset ring-foreground/10 bg-muted/30",
+                                "rounded-sm ring-1 ring-inset ring-foreground/10 bg-muted/30 p-2 space-y-2",
                               )}
                             >
-                              <Input
-                                className="h-7 text-xs"
-                                value={step.name}
-                                onChange={(e) => updateStep(milestone.id, step.id, { name: e.target.value })}
-                                placeholder="Step name"
-                              />
-                              <Input
-                                className="h-7 text-xs"
-                                value={step.assignedRole ?? ""}
-                                onChange={(e) => updateStep(milestone.id, step.id, { assignedRole: e.target.value })}
-                                placeholder="Assigned role"
-                              />
-                              <Input
-                                type="number"
-                                className="h-7 text-xs"
-                                value={step.dueOffsetDays ?? 0}
-                                onChange={(e) => updateStep(milestone.id, step.id, { dueOffsetDays: Number(e.target.value) })}
-                                placeholder="Due offset (days)"
-                              />
-                              <div className="flex items-center gap-2">
-                                <Checkbox
-                                  checked={!!step.requiredAttachment}
-                                  onCheckedChange={(checked) =>
-                                    updateStep(milestone.id, step.id, { requiredAttachment: !!checked })
-                                  }
+                              <div className="grid grid-cols-1 md:grid-cols-4 gap-2 items-center">
+                                <Input
+                                  className="h-7 text-xs"
+                                  value={step.name}
+                                  onChange={(e) => updateStep(milestone.id, step.id, { name: e.target.value })}
+                                  placeholder="Step name"
                                 />
-                                <span className="text-[11px] text-muted-foreground">Required attachment</span>
+                                <Input
+                                  className="h-7 text-xs"
+                                  value={step.assignedRole ?? ""}
+                                  onChange={(e) => updateStep(milestone.id, step.id, { assignedRole: e.target.value })}
+                                  placeholder="Assigned role"
+                                />
+                                <Input
+                                  type="number"
+                                  className="h-7 text-xs"
+                                  value={step.dueOffsetDays ?? 0}
+                                  onChange={(e) => updateStep(milestone.id, step.id, { dueOffsetDays: Number(e.target.value) })}
+                                  placeholder="Due offset (days)"
+                                />
+                                <div className="flex items-center justify-end">
+                                  <Button
+                                    variant="ghost"
+                                    size="sm"
+                                    onClick={() => removeStep(milestone.id, step.id)}
+                                  >
+                                    <Trash2 className="size-3.5" />
+                                  </Button>
+                                </div>
                               </div>
-                              <div className="flex items-center justify-end">
-                                <Button
-                                  variant="ghost"
-                                  size="sm"
-                                  onClick={() => removeStep(milestone.id, step.id)}
-                                >
-                                  <Trash2 className="size-3.5" />
-                                </Button>
+                              <div className="flex flex-wrap items-center gap-1.5 pl-1">
+                                <span className="text-[10px] uppercase tracking-wide text-muted-foreground mr-1">
+                                  Required attachments
+                                </span>
+                                {template.requiredAttachments.length === 0 ? (
+                                  <span className="text-[11px] text-muted-foreground italic">
+                                    Add attachments to the template first
+                                  </span>
+                                ) : (
+                                  template.requiredAttachments.map((name) => {
+                                    const selected = (step.requiredAttachmentNames ?? []).includes(name);
+                                    return (
+                                      <button
+                                        key={name}
+                                        type="button"
+                                        onClick={() => {
+                                          const current = step.requiredAttachmentNames ?? [];
+                                          const next = selected
+                                            ? current.filter((n) => n !== name)
+                                            : [...current, name];
+                                          updateStep(milestone.id, step.id, {
+                                            requiredAttachmentNames: next,
+                                          });
+                                        }}
+                                        className={cn(
+                                          "text-[11px] px-2 py-0.5 rounded-sm ring-1 ring-inset transition-colors",
+                                          selected
+                                            ? "bg-primary text-primary-foreground ring-primary"
+                                            : "bg-card text-foreground ring-border hover:bg-muted",
+                                        )}
+                                        aria-pressed={selected}
+                                      >
+                                        {name}
+                                      </button>
+                                    );
+                                  })
+                                )}
                               </div>
                             </div>
                           ))

@@ -73,7 +73,9 @@ export function Topbar({ user, onOpenMobileNav }: { user: DemoUser; onOpenMobile
           />
         </div>
       </div>
-      <div className="relative">
+      <div className="ml-auto flex items-center gap-2">
+        <div className="hidden md:block h-6 w-px bg-border" aria-hidden />
+        <div className="relative">
         <Button
           ref={triggerRef}
           type="button"
@@ -131,6 +133,7 @@ export function Topbar({ user, onOpenMobileNav }: { user: DemoUser; onOpenMobile
             </Card>
           </div>
         ) : null}
+      </div>
       </div>
     </header>
   );

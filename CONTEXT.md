@@ -2,13 +2,13 @@
 
 > Glossary-only documentation. No implementation details.
 
-## Holding
+## Company
 
-The parent organization that consolidates business units, projects, budgets, and performance across the group.
+The parent organization that consolidates departments, projects, budgets, and performance across the group.
 
-## Subholding
+## Department
 
-A business unit under the Holding. A Subholding owns its own Projects, users, budget allocation, and performance rollups.
+A business unit under the Company. A Department owns its own Projects, users, budget allocation, and performance rollups.
 
 ## Demo User
 
@@ -17,21 +17,21 @@ A named fake identity used in the prototype login screen. Each Demo User has a R
 ## Role
 
 The job-level capability of a Demo User. Roles in the prototype:
-- Holding Admin: full access, can edit the global Project Template library.
-- Holding Executive: read-mostly access across the Holding.
+- Company Admin: full access, can edit the global Project Template library.
+- Company Executive: read-mostly access across the Company.
 - Finance Controller: read access to budgets, spending, variance, and financial reports.
-- Subholding Admin: manages Projects and users for the assigned Subholding.
+- Department Admin: manages Projects and users for the assigned Department.
 - Project Owner: manages assigned Projects, updates progress, submits Milestones, uploads Attachments.
 - Approver: reviews assigned Approval Requests and decides on them.
 - Viewer: read-only access to assigned Projects and dashboards.
 
 ## Data Scope
 
-The set of records a Demo User is allowed to see. Holding-wide roles see all records. Scoped roles see only records for their assigned Subholding, Projects, or Approval Requests. The dashboard and tables filter visible data by Data Scope before rendering.
+The set of records a Demo User is allowed to see. Company-wide roles see all records. Scoped roles see only records for their assigned Department, Projects, or Approval Requests. The dashboard and tables filter visible data by Data Scope before rendering.
 
 ## Project Template
 
-A reusable blueprint that defines the default structure of a Project: metadata, default Milestones, default Steps, required Attachments, Approval Rules, Budget checkpoints, Risk checklist, and Completion criteria. Project Templates are centrally governed by Holding Admin.
+A reusable blueprint that defines the default structure of a Project: metadata, default Milestones, default Steps, required Attachments, Approval Rules, Budget checkpoints, Risk checklist, and Completion criteria. Project Templates are centrally governed by Company Admin.
 
 ## Template Snapshot
 
@@ -43,7 +43,7 @@ A simple visible label on a Project Template, e.g. `v1.0`. The label is incremen
 
 ## Project
 
-A time-bound initiative owned by a Subholding. A Project has a lifecycle status, approved budget, spending, Milestones, Approvals, Attachments, and an Activity Log.
+A time-bound initiative owned by a Department. A Project has a lifecycle status, approved budget, spending, Milestones, Approvals, Attachments, and an Activity Log.
 
 ## Project Lifecycle Status
 
@@ -79,7 +79,7 @@ A Demo User with the role `Approver` who can decide on Approval Requests routed 
 
 ## Budget Allocation
 
-The annual approved amount assigned to a Subholding. Project budgets and spending consume this allocation.
+The annual approved amount assigned to a Department. Project budgets and spending consume this allocation.
 
 ## Budget Status
 
@@ -99,4 +99,4 @@ A chronological list of Events on a Project, including seeded rows and appended 
 
 ## Archived
 
-A soft state on a Project, Project Template, or Subholding. Archived records are hidden from default active lists but remain visible through a status filter and are never deleted.
+A soft state on a Project, Project Template, or Department. Archived records are hidden from default active lists but remain visible through a status filter and are never deleted.

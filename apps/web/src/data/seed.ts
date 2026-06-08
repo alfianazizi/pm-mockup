@@ -85,8 +85,8 @@ const templates: ProjectTemplate[] = [
         budgetCheckpoint: true,
         completionCriteria: "All land titles transferred and permits active.",
         steps: [
-          { id: "tpl-infra-m1-s1", name: "Land survey", requiredAttachment: true, dueOffsetDays: 14, dependsOnPrevious: false, assignedRole: "Project Owner" },
-          { id: "tpl-infra-m1-s2", name: "Permit submission", requiredAttachment: true, dueOffsetDays: 45, dependsOnPrevious: true, assignedRole: "Subholding Admin" },
+          { id: "tpl-infra-m1-s1", name: "Land survey", requiredAttachmentNames: ["Environmental permit", "Land acquisition report"], dueOffsetDays: 14, dependsOnPrevious: false, assignedRole: "Project Owner" },
+          { id: "tpl-infra-m1-s2", name: "Permit submission", requiredAttachmentNames: ["Environmental permit"], dueOffsetDays: 45, dependsOnPrevious: true, assignedRole: "Subholding Admin" },
         ],
       },
       {
@@ -100,8 +100,8 @@ const templates: ProjectTemplate[] = [
         budgetCheckpoint: false,
         completionCriteria: "Detailed design approved by stakeholders.",
         steps: [
-          { id: "tpl-infra-m2-s1", name: "Concept design", requiredAttachment: false, dueOffsetDays: 20, dependsOnPrevious: false, assignedRole: "Project Owner" },
-          { id: "tpl-infra-m2-s2", name: "Detailed engineering", requiredAttachment: true, dueOffsetDays: 60, dependsOnPrevious: true, assignedRole: "Project Owner" },
+          { id: "tpl-infra-m2-s1", name: "Concept design", requiredAttachmentNames: [], dueOffsetDays: 20, dependsOnPrevious: false, assignedRole: "Project Owner" },
+          { id: "tpl-infra-m2-s2", name: "Detailed engineering", requiredAttachmentNames: ["Environmental permit"], dueOffsetDays: 60, dependsOnPrevious: true, assignedRole: "Project Owner" },
         ],
       },
       {
@@ -115,9 +115,9 @@ const templates: ProjectTemplate[] = [
         budgetCheckpoint: true,
         completionCriteria: "Construction complete and inspected.",
         steps: [
-          { id: "tpl-infra-m3-s1", name: "Mobilization", requiredAttachment: false, dueOffsetDays: 15, dependsOnPrevious: false, assignedRole: "Project Owner" },
-          { id: "tpl-infra-m3-s2", name: "Civil works", requiredAttachment: true, dueOffsetDays: 180, dependsOnPrevious: true, assignedRole: "Project Owner" },
-          { id: "tpl-infra-m3-s3", name: "Mechanical & electrical", requiredAttachment: true, dueOffsetDays: 220, dependsOnPrevious: true, assignedRole: "Project Owner" },
+          { id: "tpl-infra-m3-s1", name: "Mobilization", requiredAttachmentNames: [], dueOffsetDays: 15, dependsOnPrevious: false, assignedRole: "Project Owner" },
+          { id: "tpl-infra-m3-s2", name: "Civil works", requiredAttachmentNames: ["Construction contract"], dueOffsetDays: 180, dependsOnPrevious: true, assignedRole: "Project Owner" },
+          { id: "tpl-infra-m3-s3", name: "Mechanical & electrical", requiredAttachmentNames: ["Construction contract"], dueOffsetDays: 220, dependsOnPrevious: true, assignedRole: "Project Owner" },
         ],
       },
       {
@@ -131,8 +131,8 @@ const templates: ProjectTemplate[] = [
         budgetCheckpoint: false,
         completionCriteria: "Asset handed over and operational.",
         steps: [
-          { id: "tpl-infra-m4-s1", name: "Testing & commissioning", requiredAttachment: true, dueOffsetDays: 30, dependsOnPrevious: false, assignedRole: "Project Owner" },
-          { id: "tpl-infra-m4-s2", name: "Handover package", requiredAttachment: true, dueOffsetDays: 55, dependsOnPrevious: true, assignedRole: "Project Owner" },
+          { id: "tpl-infra-m4-s1", name: "Testing & commissioning", requiredAttachmentNames: ["Construction contract"], dueOffsetDays: 30, dependsOnPrevious: false, assignedRole: "Project Owner" },
+          { id: "tpl-infra-m4-s2", name: "Handover package", requiredAttachmentNames: ["Construction contract"], dueOffsetDays: 55, dependsOnPrevious: true, assignedRole: "Project Owner" },
         ],
       },
     ],
@@ -162,8 +162,8 @@ const templates: ProjectTemplate[] = [
         budgetCheckpoint: false,
         completionCriteria: "Requirements approved.",
         steps: [
-          { id: "tpl-it-m1-s1", name: "Stakeholder workshops", requiredAttachment: false, dueOffsetDays: 10, dependsOnPrevious: false, assignedRole: "Project Owner" },
-          { id: "tpl-it-m1-s2", name: "Requirements sign-off", requiredAttachment: true, dueOffsetDays: 25, dependsOnPrevious: true, assignedRole: "Subholding Admin" },
+          { id: "tpl-it-m1-s1", name: "Stakeholder workshops", requiredAttachmentNames: [], dueOffsetDays: 10, dependsOnPrevious: false, assignedRole: "Project Owner" },
+          { id: "tpl-it-m1-s2", name: "Requirements sign-off", requiredAttachmentNames: ["System specification"], dueOffsetDays: 25, dependsOnPrevious: true, assignedRole: "Subholding Admin" },
         ],
       },
       {
@@ -177,9 +177,9 @@ const templates: ProjectTemplate[] = [
         budgetCheckpoint: true,
         completionCriteria: "System in production.",
         steps: [
-          { id: "tpl-it-m2-s1", name: "Build & integrate", requiredAttachment: true, dueOffsetDays: 60, dependsOnPrevious: false, assignedRole: "Project Owner" },
-          { id: "tpl-it-m2-s2", name: "User acceptance testing", requiredAttachment: true, dueOffsetDays: 80, dependsOnPrevious: true, assignedRole: "Project Owner" },
-          { id: "tpl-it-m2-s3", name: "Go-live", requiredAttachment: false, dueOffsetDays: 90, dependsOnPrevious: true, assignedRole: "Project Owner" },
+          { id: "tpl-it-m2-s1", name: "Build & integrate", requiredAttachmentNames: ["System specification", "Security assessment"], dueOffsetDays: 60, dependsOnPrevious: false, assignedRole: "Project Owner" },
+          { id: "tpl-it-m2-s2", name: "User acceptance testing", requiredAttachmentNames: ["User acceptance sign-off"], dueOffsetDays: 80, dependsOnPrevious: true, assignedRole: "Project Owner" },
+          { id: "tpl-it-m2-s3", name: "Go-live", requiredAttachmentNames: ["User acceptance sign-off"], dueOffsetDays: 90, dependsOnPrevious: true, assignedRole: "Project Owner" },
         ],
       },
     ],
@@ -209,8 +209,8 @@ const templates: ProjectTemplate[] = [
         budgetCheckpoint: false,
         completionCriteria: "Plan approved.",
         steps: [
-          { id: "tpl-facility-m1-s1", name: "Site assessment", requiredAttachment: true, dueOffsetDays: 14, dependsOnPrevious: false, assignedRole: "Project Owner" },
-          { id: "tpl-facility-m1-s2", name: "Plan sign-off", requiredAttachment: true, dueOffsetDays: 25, dependsOnPrevious: true, assignedRole: "Subholding Admin" },
+          { id: "tpl-facility-m1-s1", name: "Site assessment", requiredAttachmentNames: ["Facility assessment report"], dueOffsetDays: 14, dependsOnPrevious: false, assignedRole: "Project Owner" },
+          { id: "tpl-facility-m1-s2", name: "Plan sign-off", requiredAttachmentNames: ["Facility assessment report"], dueOffsetDays: 25, dependsOnPrevious: true, assignedRole: "Subholding Admin" },
         ],
       },
       {
@@ -224,8 +224,8 @@ const templates: ProjectTemplate[] = [
         budgetCheckpoint: true,
         completionCriteria: "Renovation works complete.",
         steps: [
-          { id: "tpl-facility-m2-s1", name: "Construction", requiredAttachment: true, dueOffsetDays: 70, dependsOnPrevious: false, assignedRole: "Project Owner" },
-          { id: "tpl-facility-m2-s2", name: "Snagging & handover", requiredAttachment: true, dueOffsetDays: 88, dependsOnPrevious: true, assignedRole: "Project Owner" },
+          { id: "tpl-facility-m2-s1", name: "Construction", requiredAttachmentNames: ["Construction contract"], dueOffsetDays: 70, dependsOnPrevious: false, assignedRole: "Project Owner" },
+          { id: "tpl-facility-m2-s2", name: "Snagging & handover", requiredAttachmentNames: ["Construction contract"], dueOffsetDays: 88, dependsOnPrevious: true, assignedRole: "Project Owner" },
         ],
       },
     ],
@@ -300,7 +300,7 @@ function snapshotMilestones(templateId: string, projectId: string, statusMix: "e
           assignedRole: ts.assignedRole,
           dueDate: plannedStart.toISOString().slice(0, 10),
           completed: stepDone,
-          requiredAttachment: !!ts.requiredAttachment,
+          requiredAttachmentNames: ts.requiredAttachmentNames ?? [],
         };
       }),
     };
@@ -434,7 +434,7 @@ const approvals: ApprovalRequest[] = (() => {
 })();
 
 export const seedState: AppState = {
-  version: 2,
+  version: 3,
   globalYear: YEAR,
   globalPeriod: "quarterly",
   globalQuarter: "Q2",

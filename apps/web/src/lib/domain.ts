@@ -194,7 +194,7 @@ export interface TemplateStep {
   name: string;
   description?: string;
   assignedRole?: string;
-  requiredAttachment?: boolean;
+  requiredAttachmentNames?: string[];
   dueOffsetDays?: number;
   dependsOnPrevious?: boolean;
 }
@@ -238,8 +238,8 @@ export interface ProjectStep {
   assignedUserId?: string;
   dueDate?: string;
   completed: boolean;
-  requiredAttachment: boolean;
-  attachmentId?: string;
+  requiredAttachmentNames: string[];
+  attachmentIds?: string[];
 }
 
 export interface ProjectMilestone {

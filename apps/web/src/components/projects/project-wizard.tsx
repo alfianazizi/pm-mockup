@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import { ArrowLeft, ArrowRight, Check, FileText, Folder, ShieldCheck, Users } from "lucide-react";
+import { ArrowLeft, ArrowRight, Check, FileText, Folder, Paperclip, ShieldCheck, Users } from "lucide-react";
 
 import { Button } from "@project-management-mockup/ui/components/button";
 import { Card } from "@project-management-mockup/ui/components/card";
@@ -445,9 +445,27 @@ export function ProjectWizard({ onDone }: { onDone: () => void }) {
                   </div>
                   <div className="px-4 pb-3 space-y-1">
                     {m.steps.map((s) => (
-                      <div key={s.id} className="text-[11px] text-muted-foreground flex items-center gap-2">
-                        <span className="size-1 rounded-full bg-muted-foreground" />
-                        {s.name} {s.requiredAttachment ? "· attachment required" : ""}
+                      <div key={s.id} className="text-[11px] text-muted-foreground">
+                        <div className="flex items-center gap-2">
+                          <span className="size-1 rounded-full bg-muted-foreground" />
+                          {s.name}
+                        </div>
+                        {s.requiredAttachmentNames && s.requiredAttachmentNames.length > 0 ? (
+                          <div className="ml-3 flex flex-wrap items-center gap-1.5">
+                            <Paperclip className="size-3" />
+                            <span className="text-[10px] uppercase tracking-wide">
+                              Required:
+                            </span>
+                            {s.requiredAttachmentNames.map((name) => (
+                              <span
+                                key={name}
+                                className="text-[11px] px-1.5 py-0.5 rounded-sm bg-primary/10 text-primary ring-1 ring-inset ring-primary/20"
+                              >
+                                {name}
+                              </span>
+                            ))}
+                          </div>
+                        ) : null}
                       </div>
                     ))}
                     {m.steps.length === 0 ? (

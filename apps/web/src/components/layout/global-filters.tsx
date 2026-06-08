@@ -2,7 +2,6 @@ import { Filter, X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 
 import { Button } from "@project-management-mockup/ui/components/button";
-import { Label } from "@project-management-mockup/ui/components/label";
 import { cn } from "@project-management-mockup/ui/lib/utils";
 
 import { useAppState } from "@/lib/app-state";
@@ -151,10 +150,6 @@ export function GlobalFilters({ user, subholdings }: { user: DemoUser; subholdin
           <X className="size-3.5" /> Clear
         </Button>
       ) : null}
-
-      <div className="ml-auto hidden md:flex items-center gap-2 text-[11px] text-muted-foreground">
-        <Label>Period reporting</Label>
-      </div>
     </div>
   );
 }

@@ -462,18 +462,36 @@ function MilestonesTab({ projectId, canManage, currentUserId }: { projectId: str
               </div>
               <div className="space-y-1">
                 {milestone.steps.map((step) => (
-                  <label key={step.id} className="flex items-center gap-2 text-xs">
-                    <input
-                      type="checkbox"
-                      checked={step.completed}
-                      onChange={() => toggleStep(milestone, step)}
-                      disabled={!canManage}
-                      className="size-3.5 accent-primary"
-                    />
-                    <span className={cn("flex-1", step.completed && "line-through text-muted-foreground")}>{step.name}</span>
-                    <span className="text-[11px] text-muted-foreground">{step.assignedRole ?? "—"}</span>
-                    <span className="text-[11px] text-muted-foreground">{step.dueDate ? formatDate(step.dueDate) : ""}</span>
-                  </label>
+                  <div key={step.id} className="text-xs">
+                    <label className="flex items-center gap-2">
+                      <input
+                        type="checkbox"
+                        checked={step.completed}
+                        onChange={() => toggleStep(milestone, step)}
+                        disabled={!canManage}
+                        className="size-3.5 accent-primary"
+                      />
+                      <span className={cn("flex-1", step.completed && "line-through text-muted-foreground")}>{step.name}</span>
+                      <span className="text-[11px] text-muted-foreground">{step.assignedRole ?? "—"}</span>
+                      <span className="text-[11px] text-muted-foreground">{step.dueDate ? formatDate(step.dueDate) : ""}</span>
+                    </label>
+                    {step.requiredAttachmentNames.length > 0 ? (
+                      <div className="ml-6 mt-1 flex flex-wrap items-center gap-1.5">
+                        <Paperclip className="size-3 text-muted-foreground" />
+                        <span className="text-[10px] uppercase tracking-wide text-muted-foreground">
+                          Upload:
+                        </span>
+                        {step.requiredAttachmentNames.map((name) => (
+                          <span
+                            key={name}
+                            className="text-[11px] px-1.5 py-0.5 rounded-sm bg-primary/10 text-primary ring-1 ring-inset ring-primary/20"
+                          >
+                            {name}
+                          </span>
+                        ))}
+                      </div>
+                    ) : null}
+                  </div>
                 ))}
                 {milestone.steps.length === 0 ? (
                   <div className="text-[11px] text-muted-foreground">No steps in this milestone.</div>

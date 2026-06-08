@@ -179,7 +179,7 @@ function snapshotStep(templateStep: TemplateStep, plannedStart: Date): ProjectSt
     assignedRole: templateStep.assignedRole,
     dueDate: due.toISOString().slice(0, 10),
     completed: false,
-    requiredAttachment: !!templateStep.requiredAttachment,
+    requiredAttachmentNames: templateStep.requiredAttachmentNames ?? [],
   };
 }
 
