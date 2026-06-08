@@ -1,29 +1,24 @@
 import { Filter, X } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
 
 import { Button } from "@project-management-mockup/ui/components/button";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuLabel,
-  DropdownMenuRadioGroup,
-  DropdownMenuRadioItem,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@project-management-mockup/ui/components/dropdown-menu";
 import { Label } from "@project-management-mockup/ui/components/label";
+import { cn } from "@project-management-mockup/ui/lib/utils";
+
+import { useAppState } from "@/lib/app-state";
+import { setGlobalPeriod, setGlobalSubholding } from "@/lib/actions";
+import type { DemoUser, Subholding } from "@/lib/domain";
+import { isHoldingWide } from "@/lib/permissions";
 import {
   QUARTER_LABELS,
   SEMESTER_LABELS,
   type Quarter,
   type Semester,
-  type Subholding,
 } from "@/lib/domain";
-import { isHoldingWide } from "@/lib/permissions";
-import type { DemoUser } from "@/lib/domain";
-import { useAppState } from "@/lib/app-state";
-import { setGlobalPeriod, setGlobalSubholding } from "@/lib/actions";
 
 const YEARS = [2026, 2025, 2024];
+
+type Period = "quarterly" | "semesterly" | "annually";
 
 export function GlobalFilters({ user, subholdings }: { user: DemoUser; subholdings: Subholding[] }) {
   const { state, setState } = useAppState();
@@ -40,124 +35,108 @@ export function GlobalFilters({ user, subholdings }: { user: DemoUser; subholdin
       </div>
 
       {showSubholding ? (
-        <DropdownMenu>
-          <DropdownMenuTrigger
-            render={(props) => (
-              <Button variant="outline" size="sm" {...props}>
-                {activeSubholding ? activeSubholding.name : "All subholdings"}
-              </Button>
-            )}
+        <FilterPopover
+          label={activeSubholding ? activeSubholding.name : "All subholdings"}
+          title="Subholding"
+          minWidthClass="min-w-56"
+        >
+          <FilterOption
+            active={!state.globalSubholdingId}
+            onSelect={() => setState((s) => setGlobalSubholding(s, undefined))}
+            label="All subholdings"
           />
-          <DropdownMenuContent align="start" className="min-w-56">
-            <DropdownMenuLabel>Subholding</DropdownMenuLabel>
-            <DropdownMenuRadioGroup
-              value={state.globalSubholdingId ?? "all"}
-              onValueChange={(value) => {
-                const next = value === "all" ? undefined : value;
-                setState((s) => setGlobalSubholding(s, next));
-              }}
-            >
-              <DropdownMenuRadioItem value="all">All subholdings</DropdownMenuRadioItem>
-              {subholdings.map((s) => (
-                <DropdownMenuRadioItem key={s.id} value={s.id}>
-                  {s.name}
-                </DropdownMenuRadioItem>
-              ))}
-            </DropdownMenuRadioGroup>
-          </DropdownMenuContent>
-        </DropdownMenu>
+          {subholdings.map((s) => (
+            <FilterOption
+              key={s.id}
+              active={state.globalSubholdingId === s.id}
+              onSelect={() => setState((prev) => setGlobalSubholding(prev, s.id))}
+              label={s.name}
+            />
+          ))}
+        </FilterPopover>
       ) : null}
 
-      <DropdownMenu>
-        <DropdownMenuTrigger
-          render={(props) => (
-            <Button variant="outline" size="sm" {...props}>
-              {state.globalYear}
-            </Button>
-          )}
-        />
-        <DropdownMenuContent align="start">
-          <DropdownMenuLabel>Year</DropdownMenuLabel>
-          <DropdownMenuRadioGroup
-            value={String(state.globalYear)}
-            onValueChange={(value) => {
-              const year = Number(value);
-              setState((s) => setGlobalPeriod(s, s.globalPeriod, year, s.globalQuarter, s.globalSemester));
-            }}
-          >
-            {YEARS.map((y) => (
-              <DropdownMenuRadioItem key={y} value={String(y)}>
-                {y}
-              </DropdownMenuRadioItem>
-            ))}
-          </DropdownMenuRadioGroup>
-        </DropdownMenuContent>
-      </DropdownMenu>
+      <FilterPopover
+        label={String(state.globalYear)}
+        title="Year"
+      >
+        {YEARS.map((y) => (
+          <FilterOption
+            key={y}
+            active={state.globalYear === y}
+            onSelect={() =>
+              setState((s) => setGlobalPeriod(s, s.globalPeriod, y, s.globalQuarter, s.globalSemester))
+            }
+            label={String(y)}
+          />
+        ))}
+      </FilterPopover>
 
-      <DropdownMenu>
-        <DropdownMenuTrigger
-          render={(props) => (
-            <Button variant="outline" size="sm" {...props}>
-              {state.globalPeriod === "quarterly"
-                ? QUARTER_LABELS[quarter as Quarter]
-                : state.globalPeriod === "semesterly"
-                  ? SEMESTER_LABELS[semester as Semester]
-                  : "Annually"}
-            </Button>
-          )}
+      <FilterPopover
+        label={
+          state.globalPeriod === "quarterly"
+            ? QUARTER_LABELS[quarter as Quarter]
+            : state.globalPeriod === "semesterly"
+              ? SEMESTER_LABELS[semester as Semester]
+              : "Annually"
+        }
+        title="Period"
+        minWidthClass="min-w-56"
+      >
+        <FilterOption
+          active={state.globalPeriod === "quarterly"}
+          onSelect={() =>
+            setState((s) => setGlobalPeriod(s, "quarterly", s.globalYear, s.globalQuarter, s.globalSemester))
+          }
+          label="Quarterly"
         />
-        <DropdownMenuContent align="start" className="min-w-56">
-          <DropdownMenuLabel>Period</DropdownMenuLabel>
-          <DropdownMenuRadioGroup
-            value={state.globalPeriod}
-            onValueChange={(value) => {
-              const period = value as "quarterly" | "semesterly" | "annually";
-              setState((s) => setGlobalPeriod(s, period, s.globalYear, s.globalQuarter, s.globalSemester));
-            }}
-          >
-            <DropdownMenuRadioItem value="quarterly">Quarterly</DropdownMenuRadioItem>
-            <DropdownMenuRadioItem value="semesterly">Semesterly</DropdownMenuRadioItem>
-            <DropdownMenuRadioItem value="annually">Annually</DropdownMenuRadioItem>
-          </DropdownMenuRadioGroup>
-          <DropdownMenuSeparator />
-          {state.globalPeriod === "quarterly" ? (
-            <>
-              <DropdownMenuLabel>Quarter</DropdownMenuLabel>
-              <DropdownMenuRadioGroup
-                value={quarter}
-                onValueChange={(value) => {
-                  const q = value as Quarter;
-                  setState((s) => setGlobalPeriod(s, "quarterly", s.globalYear, q, s.globalSemester));
-                }}
-              >
-                {(Object.keys(QUARTER_LABELS) as Quarter[]).map((q) => (
-                  <DropdownMenuRadioItem key={q} value={q}>
-                    {QUARTER_LABELS[q]}
-                  </DropdownMenuRadioItem>
-                ))}
-              </DropdownMenuRadioGroup>
-            </>
-          ) : null}
-          {state.globalPeriod === "semesterly" ? (
-            <>
-              <DropdownMenuLabel>Semester</DropdownMenuLabel>
-              <DropdownMenuRadioGroup
-                value={semester}
-                onValueChange={(value) => {
-                  const sem = value as Semester;
-                  setState((s) => setGlobalPeriod(s, "semesterly", s.globalYear, s.globalQuarter, sem));
-                }}
-              >
-                {(Object.keys(SEMESTER_LABELS) as Semester[]).map((s2) => (
-                  <DropdownMenuRadioItem key={s2} value={s2}>
-                    {SEMESTER_LABELS[s2]}
-                  </DropdownMenuRadioItem>
-                ))}
-              </DropdownMenuRadioGroup>
-            </>
-          ) : null}
-        </DropdownMenuContent>
-      </DropdownMenu>
+        <FilterOption
+          active={state.globalPeriod === "semesterly"}
+          onSelect={() =>
+            setState((s) => setGlobalPeriod(s, "semesterly", s.globalYear, s.globalQuarter, s.globalSemester))
+          }
+          label="Semesterly"
+        />
+        <FilterOption
+          active={state.globalPeriod === "annually"}
+          onSelect={() =>
+            setState((s) => setGlobalPeriod(s, "annually", s.globalYear, s.globalQuarter, s.globalSemester))
+          }
+          label="Annually"
+        />
+        {state.globalPeriod === "quarterly" ? (
+          <>
+            <div className="my-1 h-px bg-border" />
+            <FilterSectionLabel>Quarter</FilterSectionLabel>
+            {(Object.keys(QUARTER_LABELS) as Quarter[]).map((q) => (
+              <FilterOption
+                key={q}
+                active={quarter === q}
+                onSelect={() =>
+                  setState((s) => setGlobalPeriod(s, "quarterly", s.globalYear, q, s.globalSemester))
+                }
+                label={QUARTER_LABELS[q]}
+              />
+            ))}
+          </>
+        ) : null}
+        {state.globalPeriod === "semesterly" ? (
+          <>
+            <div className="my-1 h-px bg-border" />
+            <FilterSectionLabel>Semester</FilterSectionLabel>
+            {(Object.keys(SEMESTER_LABELS) as Semester[]).map((s2) => (
+              <FilterOption
+                key={s2}
+                active={semester === s2}
+                onSelect={() =>
+                  setState((s) => setGlobalPeriod(s, "semesterly", s.globalYear, s.globalQuarter, s2))
+                }
+                label={SEMESTER_LABELS[s2]}
+              />
+            ))}
+          </>
+        ) : null}
+      </FilterPopover>
 
       {(state.globalSubholdingId || state.globalPeriod !== "quarterly" || state.globalYear !== 2026) ? (
         <Button
@@ -176,6 +155,109 @@ export function GlobalFilters({ user, subholdings }: { user: DemoUser; subholdin
       <div className="ml-auto hidden md:flex items-center gap-2 text-[11px] text-muted-foreground">
         <Label>Period reporting</Label>
       </div>
+    </div>
+  );
+}
+
+function FilterSectionLabel({ children }: { children: React.ReactNode }) {
+  return (
+    <div className="px-3 py-1 text-[10px] uppercase tracking-wide text-muted-foreground">
+      {children}
+    </div>
+  );
+}
+
+function FilterOption({
+  active,
+  onSelect,
+  label,
+}: {
+  active: boolean;
+  onSelect: () => void;
+  label: string;
+}) {
+  return (
+    <button
+      type="button"
+      role="menuitemradio"
+      aria-checked={active}
+      onClick={onSelect}
+      className={cn(
+        "flex w-full items-center justify-between gap-2 px-3 py-1.5 text-left text-xs rounded-none",
+        active
+          ? "bg-primary/10 text-primary font-medium"
+          : "text-foreground hover:bg-muted",
+      )}
+    >
+      <span>{label}</span>
+      {active ? <span className="text-[10px] uppercase tracking-wide text-primary">Selected</span> : null}
+    </button>
+  );
+}
+
+function FilterPopover({
+  label,
+  title,
+  children,
+  minWidthClass,
+}: {
+  label: string;
+  title: string;
+  children: React.ReactNode;
+  minWidthClass?: string;
+}) {
+  const [open, setOpen] = useState(false);
+  const containerRef = useRef<HTMLDivElement | null>(null);
+  const triggerRef = useRef<HTMLButtonElement | null>(null);
+
+  useEffect(() => {
+    if (!open) return;
+    const handleClick = (event: MouseEvent) => {
+      const target = event.target as Node;
+      if (containerRef.current?.contains(target)) return;
+      if (triggerRef.current?.contains(target)) return;
+      setOpen(false);
+    };
+    const handleKey = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setOpen(false);
+    };
+    document.addEventListener("mousedown", handleClick);
+    document.addEventListener("keydown", handleKey);
+    return () => {
+      document.removeEventListener("mousedown", handleClick);
+      document.removeEventListener("keydown", handleKey);
+    };
+  }, [open]);
+
+  return (
+    <div className="relative">
+      <button
+        ref={triggerRef}
+        type="button"
+        aria-haspopup="menu"
+        aria-expanded={open}
+        onClick={() => setOpen((o) => !o)}
+        className={cn(
+          "inline-flex h-7 items-center gap-1.5 rounded-none border border-input bg-card px-2.5 text-xs text-foreground transition-colors hover:bg-muted",
+          open && "bg-muted",
+        )}
+      >
+        {label}
+      </button>
+      {open ? (
+        <div
+          ref={containerRef}
+          role="menu"
+          aria-label={title}
+          className={cn(
+            "absolute left-0 top-full mt-1 z-40 min-w-48 overflow-hidden rounded-sm border border-border bg-card shadow-md",
+            minWidthClass,
+          )}
+        >
+          <FilterSectionLabel>{title}</FilterSectionLabel>
+          <div className="py-1">{children}</div>
+        </div>
+      ) : null}
     </div>
   );
 }
