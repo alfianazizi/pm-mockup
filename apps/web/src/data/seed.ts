@@ -2,7 +2,6 @@ import type {
   ActivityLogEntry,
   ApprovalRequest,
   AppState,
-  DemoUser,
   Project,
   ProjectMilestone,
   ProjectTemplate,
@@ -20,8 +19,7 @@ const subholdings: Subholding[] = [
     sector: "Energy",
     status: "active",
     annualBudgetAllocation: 450,
-    description:
-      "Power generation, transmission, and renewable energy initiatives across the holding.",
+    description: "Power generation, transmission, and renewable energy initiatives.",
   },
   {
     id: "sub-infra",
@@ -30,8 +28,7 @@ const subholdings: Subholding[] = [
     sector: "Infrastructure",
     status: "active",
     annualBudgetAllocation: 620,
-    description:
-      "Roads, bridges, ports, and large public infrastructure programs.",
+    description: "Roads, bridges, ports, and large public infrastructure programs.",
   },
   {
     id: "sub-property",
@@ -40,7 +37,7 @@ const subholdings: Subholding[] = [
     sector: "Property & Real Estate",
     status: "active",
     annualBudgetAllocation: 380,
-    description: "Commercial property developments, mixed-use towers, and facilities.",
+    description: "Commercial property developments and facilities.",
   },
   {
     id: "sub-logistics",
@@ -49,7 +46,7 @@ const subholdings: Subholding[] = [
     sector: "Logistics",
     status: "active",
     annualBudgetAllocation: 210,
-    description: "Warehousing, fleet, and distribution network expansions.",
+    description: "Warehousing, fleet, and distribution network.",
   },
   {
     id: "sub-digital",
@@ -58,7 +55,7 @@ const subholdings: Subholding[] = [
     sector: "Digital Services",
     status: "active",
     annualBudgetAllocation: 165,
-    description: "IT platforms, data, and customer-facing digital products.",
+    description: "IT platforms, data, and digital products.",
   },
 ];
 
@@ -68,14 +65,14 @@ const templates: ProjectTemplate[] = [
     name: "Infrastructure Development Project",
     category: "Infrastructure",
     version: "v1.2",
-    description:
-      "Standard structure for civil infrastructure delivery: land, design, construction, commissioning, and handover.",
+    description: "Civil infrastructure delivery: land, design, construction, commissioning, handover.",
     defaultApproverRole: "subholding_admin",
     requiredAttachments: ["Environmental permit", "Land acquisition report", "Construction contract"],
     riskChecklist: ["Permit risk", "Land acquisition risk", "Weather risk", "Vendor performance"],
     status: "active",
     createdBy: "user-001",
     lastUpdated: "2026-04-12",
+    completionCriteria: "Asset handed over and operational.",
     milestones: [
       {
         id: "tpl-infra-m1",
@@ -145,13 +142,14 @@ const templates: ProjectTemplate[] = [
     name: "IT System Implementation",
     category: "IT",
     version: "v1.0",
-    description: "Standard flow for enterprise IT implementation: discovery, design, build, deploy, and adoption.",
+    description: "Enterprise IT implementation: discovery, design, build, deploy, adoption.",
     defaultApproverRole: "subholding_admin",
     requiredAttachments: ["System specification", "Security assessment", "User acceptance sign-off"],
     riskChecklist: ["Vendor risk", "Data migration risk", "Adoption risk", "Cyber risk"],
     status: "active",
     createdBy: "user-001",
     lastUpdated: "2026-02-05",
+    completionCriteria: "System in production and adopted by target users.",
     milestones: [
       {
         id: "tpl-it-m1",
@@ -170,33 +168,18 @@ const templates: ProjectTemplate[] = [
       },
       {
         id: "tpl-it-m2",
-        name: "Design",
-        description: "Solution design, architecture, and security review.",
-        order: 2,
-        estimatedDurationDays: 45,
-        approvalRequired: true,
-        approvalRole: "subholding_admin",
-        budgetCheckpoint: false,
-        completionCriteria: "Design approved.",
-        steps: [
-          { id: "tpl-it-m2-s1", name: "Solution design", requiredAttachment: true, dueOffsetDays: 30, dependsOnPrevious: false, assignedRole: "Project Owner" },
-          { id: "tpl-it-m2-s2", name: "Security review", requiredAttachment: true, dueOffsetDays: 40, dependsOnPrevious: true, assignedRole: "Subholding Admin" },
-        ],
-      },
-      {
-        id: "tpl-it-m3",
         name: "Build & Deploy",
         description: "Configuration, integration, data migration, and go-live.",
-        order: 3,
+        order: 2,
         estimatedDurationDays: 90,
         approvalRequired: true,
         approvalRole: "holding_admin",
         budgetCheckpoint: true,
         completionCriteria: "System in production.",
         steps: [
-          { id: "tpl-it-m3-s1", name: "Build & integrate", requiredAttachment: true, dueOffsetDays: 60, dependsOnPrevious: false, assignedRole: "Project Owner" },
-          { id: "tpl-it-m3-s2", name: "User acceptance testing", requiredAttachment: true, dueOffsetDays: 80, dependsOnPrevious: true, assignedRole: "Project Owner" },
-          { id: "tpl-it-m3-s3", name: "Go-live", requiredAttachment: false, dueOffsetDays: 90, dependsOnPrevious: true, assignedRole: "Project Owner" },
+          { id: "tpl-it-m2-s1", name: "Build & integrate", requiredAttachment: true, dueOffsetDays: 60, dependsOnPrevious: false, assignedRole: "Project Owner" },
+          { id: "tpl-it-m2-s2", name: "User acceptance testing", requiredAttachment: true, dueOffsetDays: 80, dependsOnPrevious: true, assignedRole: "Project Owner" },
+          { id: "tpl-it-m2-s3", name: "Go-live", requiredAttachment: false, dueOffsetDays: 90, dependsOnPrevious: true, assignedRole: "Project Owner" },
         ],
       },
     ],
@@ -206,13 +189,14 @@ const templates: ProjectTemplate[] = [
     name: "Facility Renovation",
     category: "Facility",
     version: "v1.1",
-    description: "Office or asset renovation covering assessment, design, construction, and operations handover.",
+    description: "Office or asset renovation covering assessment, design, construction, and handover.",
     defaultApproverRole: "subholding_admin",
     requiredAttachments: ["Facility assessment report", "Construction contract"],
     riskChecklist: ["Occupancy risk", "Budget risk"],
     status: "active",
     createdBy: "user-001",
     lastUpdated: "2026-03-20",
+    completionCriteria: "Renovation works complete and operations resumed.",
     milestones: [
       {
         id: "tpl-facility-m1",
@@ -246,122 +230,38 @@ const templates: ProjectTemplate[] = [
       },
     ],
   },
-  {
-    id: "tpl-procurement",
-    name: "Procurement Project",
-    category: "Procurement",
-    version: "v1.0",
-    description: "Strategic procurement of equipment, materials, or services at scale.",
-    defaultApproverRole: "subholding_admin",
-    requiredAttachments: ["Procurement plan", "Vendor evaluation"],
-    riskChecklist: ["Vendor risk", "Price risk", "Delivery risk"],
-    status: "active",
-    createdBy: "user-001",
-    lastUpdated: "2026-01-15",
-    milestones: [
-      {
-        id: "tpl-procurement-m1",
-        name: "Sourcing",
-        description: "Vendor identification and evaluation.",
-        order: 1,
-        estimatedDurationDays: 30,
-        approvalRequired: true,
-        approvalRole: "subholding_admin",
-        budgetCheckpoint: false,
-        completionCriteria: "Vendor selected.",
-        steps: [
-          { id: "tpl-procurement-m1-s1", name: "Vendor shortlist", requiredAttachment: true, dueOffsetDays: 14, dependsOnPrevious: false, assignedRole: "Project Owner" },
-          { id: "tpl-procurement-m1-s2", name: "Evaluation", requiredAttachment: true, dueOffsetDays: 28, dependsOnPrevious: true, assignedRole: "Subholding Admin" },
-        ],
-      },
-      {
-        id: "tpl-procurement-m2",
-        name: "Award & Delivery",
-        description: "Contract award, delivery, and acceptance.",
-        order: 2,
-        estimatedDurationDays: 60,
-        approvalRequired: true,
-        approvalRole: "holding_admin",
-        budgetCheckpoint: true,
-        completionCriteria: "Goods received and accepted.",
-        steps: [
-          { id: "tpl-procurement-m2-s1", name: "Contract award", requiredAttachment: true, dueOffsetDays: 20, dependsOnPrevious: false, assignedRole: "Subholding Admin" },
-          { id: "tpl-procurement-m2-s2", name: "Delivery & acceptance", requiredAttachment: true, dueOffsetDays: 55, dependsOnPrevious: true, assignedRole: "Project Owner" },
-        ],
-      },
-    ],
-  },
-  {
-    id: "tpl-expansion",
-    name: "Business Expansion Project",
-    category: "Expansion",
-    version: "v1.0",
-    description: "Standard structure for entering a new market or launching a new line of business.",
-    defaultApproverRole: "holding_admin",
-    requiredAttachments: ["Market study", "Business case", "Risk register"],
-    riskChecklist: ["Market risk", "Regulatory risk", "Talent risk"],
-    status: "active",
-    createdBy: "user-001",
-    lastUpdated: "2026-05-02",
-    milestones: [
-      {
-        id: "tpl-expansion-m1",
-        name: "Strategy & Business Case",
-        description: "Market study, financial case, and approval.",
-        order: 1,
-        estimatedDurationDays: 45,
-        approvalRequired: true,
-        approvalRole: "holding_admin",
-        budgetCheckpoint: false,
-        completionCriteria: "Business case approved.",
-        steps: [
-          { id: "tpl-expansion-m1-s1", name: "Market study", requiredAttachment: true, dueOffsetDays: 20, dependsOnPrevious: false, assignedRole: "Project Owner" },
-          { id: "tpl-expansion-m1-s2", name: "Business case sign-off", requiredAttachment: true, dueOffsetDays: 40, dependsOnPrevious: true, assignedRole: "Holding Admin" },
-        ],
-      },
-      {
-        id: "tpl-expansion-m2",
-        name: "Setup & Launch",
-        description: "Entity setup, hiring, partner onboarding, and launch.",
-        order: 2,
-        estimatedDurationDays: 120,
-        approvalRequired: true,
-        approvalRole: "holding_admin",
-        budgetCheckpoint: true,
-        completionCriteria: "Operations live.",
-        steps: [
-          { id: "tpl-expansion-m2-s1", name: "Entity & hiring", requiredAttachment: true, dueOffsetDays: 60, dependsOnPrevious: false, assignedRole: "Subholding Admin" },
-          { id: "tpl-expansion-m2-s2", name: "Launch readiness", requiredAttachment: true, dueOffsetDays: 110, dependsOnPrevious: true, assignedRole: "Project Owner" },
-        ],
-      },
-    ],
-  },
 ];
 
-const users: DemoUser[] = [
-  { id: "user-001", name: "Andini Pratiwi", email: "andini.pratiwi@holding.id", role: "holding_admin", status: "active", lastLogin: "2026-06-05 09:12", avatarColor: "#556ee6" },
-  { id: "user-002", name: "Budi Santosa", email: "budi.santosa@holding.id", role: "holding_executive", status: "active", lastLogin: "2026-06-04 17:40", avatarColor: "#564ab1" },
-  { id: "user-003", name: "Citra Mahardika", email: "citra.mahardika@holding.id", role: "finance_controller", status: "active", lastLogin: "2026-06-05 08:20", avatarColor: "#34c38f" },
-  { id: "user-004", name: "Dewi Larasati", email: "dewi.larasati@energy.id", role: "subholding_admin", subholdingId: "sub-energy", status: "active", lastLogin: "2026-06-03 14:10", avatarColor: "#f1b44c" },
-  { id: "user-005", name: "Eko Wibowo", email: "eko.wibowo@infrastructure.id", role: "subholding_admin", subholdingId: "sub-infra", status: "active", lastLogin: "2026-06-05 10:05", avatarColor: "#f46a6a" },
-  { id: "user-006", name: "Fajar Nugroho", email: "fajar.nugroho@property.id", role: "subholding_admin", subholdingId: "sub-property", status: "active", lastLogin: "2026-06-04 11:30", avatarColor: "#50a5f1" },
-  { id: "user-007", name: "Gita Pertiwi", email: "gita.pertiwi@logistics.id", role: "subholding_admin", subholdingId: "sub-logistics", status: "active", lastLogin: "2026-06-02 13:45", avatarColor: "#e83e8c" },
-  { id: "user-008", name: "Hadi Kusuma", email: "hadi.kusuma@digital.id", role: "subholding_admin", subholdingId: "sub-digital", status: "active", lastLogin: "2026-06-05 07:55", avatarColor: "#556ee6" },
-  { id: "user-009", name: "Indah Cahyani", email: "indah.cahyani@energy.id", role: "project_owner", subholdingId: "sub-energy", projectIds: ["p-001", "p-002"], status: "active", lastLogin: "2026-06-05 09:50", avatarColor: "#34c38f" },
-  { id: "user-010", name: "Joko Riyanto", email: "joko.riyanto@infrastructure.id", role: "project_owner", subholdingId: "sub-infra", projectIds: ["p-003", "p-004", "p-005"], status: "active", lastLogin: "2026-06-05 09:20", avatarColor: "#f1b44c" },
-  { id: "user-011", name: "Kartika Sari", email: "kartika.sari@property.id", role: "project_owner", subholdingId: "sub-property", projectIds: ["p-006", "p-007"], status: "active", lastLogin: "2026-06-04 16:00", avatarColor: "#f46a6a" },
-  { id: "user-012", name: "Lutfi Ramadhan", email: "lutfi.ramadhan@logistics.id", role: "project_owner", subholdingId: "sub-logistics", projectIds: ["p-008"], status: "active", lastLogin: "2026-06-05 10:30", avatarColor: "#50a5f1" },
-  { id: "user-013", name: "Made Surya", email: "made.surya@holding.id", role: "approver", status: "active", lastLogin: "2026-06-05 08:10", avatarColor: "#564ab1" },
-  { id: "user-014", name: "Nadia Putri", email: "nadia.putri@holding.id", role: "approver", status: "active", lastLogin: "2026-06-04 18:00", avatarColor: "#e83e8c" },
-  { id: "user-015", name: "Oscar Halim", email: "oscar.halim@holding.id", role: "viewer", subholdingId: "sub-infra", projectIds: ["p-003"], status: "active", lastLogin: "2026-06-01 11:00", avatarColor: "#adb5bd" },
-  { id: "user-016", name: "Putri Anggraeni", email: "putri.anggraeni@holding.id", role: "approver", status: "active", lastLogin: "2026-06-03 12:25", avatarColor: "#556ee6" },
+const users = [
+  {
+    id: "user-001",
+    name: "Andini Pratiwi",
+    email: "andini.pratiwi@holding.id",
+    role: "holding_admin" as const,
+    status: "active" as const,
+    lastLogin: "2026-06-08 09:12",
+    avatarColor: "#556ee6",
+    approvalRequestIds: [] as string[],
+  },
+  {
+    id: "user-002",
+    name: "Indah Cahyani",
+    email: "indah.cahyani@infra.id",
+    role: "project_owner" as const,
+    subholdingId: "sub-infra",
+    projectIds: ["p-001", "p-002"],
+    status: "active" as const,
+    lastLogin: "2026-06-08 09:50",
+    avatarColor: "#34c38f",
+    approvalRequestIds: [] as string[],
+  },
 ];
 
 function snapshotMilestones(templateId: string, projectId: string, statusMix: "early" | "mid" | "late" | "done") {
   const tpl = templates.find((t) => t.id === templateId)!;
   let milestoneIndex = 0;
   if (statusMix === "early") milestoneIndex = 0;
-  if (statusMix === "mid") milestoneIndex = Math.floor(tpl.milestones.length / 2);
+  if (statusMix === "mid") milestoneIndex = Math.max(0, Math.floor(tpl.milestones.length / 2));
   if (statusMix === "late") milestoneIndex = Math.max(0, tpl.milestones.length - 1);
   if (statusMix === "done") milestoneIndex = tpl.milestones.length;
 
@@ -416,33 +316,20 @@ const projectSeed: Array<{
   status: Project["status"];
   startDate: string;
   targetCompletionDate: string;
-  riskOverride?: Project["riskOverride"];
   mix: "early" | "mid" | "late" | "done";
   category: string;
   priority: Project["priority"];
   actualSpendingRatio: number;
   committedRatio: number;
 }> = [
-  { name: "Cibinong Solar Farm Phase 2", subholdingId: "sub-energy", templateId: "tpl-infra", ownerId: "user-009", approvedBudget: 120, status: "active", startDate: `${YEAR}-01-15`, targetCompletionDate: `${YEAR}-09-30`, riskOverride: "medium", mix: "mid", category: "Infrastructure", priority: "high", actualSpendingRatio: 0.72, committedRatio: 0.85 },
-  { name: "Pekanbaru Grid Modernization", subholdingId: "sub-energy", templateId: "tpl-it", ownerId: "user-009", approvedBudget: 45, status: "active", startDate: `${YEAR}-02-01`, targetCompletionDate: `${YEAR}-07-30`, mix: "mid", category: "IT", priority: "high", actualSpendingRatio: 0.55, committedRatio: 0.7 },
-  { name: "Tanjung Priok Port Expansion", subholdingId: "sub-infra", templateId: "tpl-infra", ownerId: "user-010", approvedBudget: 280, status: "active", startDate: `${YEAR}-01-10`, targetCompletionDate: `${YEAR}-12-20`, riskOverride: "high", mix: "late", category: "Infrastructure", priority: "high", actualSpendingRatio: 0.93, committedRatio: 0.98 },
-  { name: "Trans-Sumatra Highway Section 4", subholdingId: "sub-infra", templateId: "tpl-infra", ownerId: "user-010", approvedBudget: 350, status: "active", startDate: `${YEAR}-01-05`, targetCompletionDate: `${YEAR}-12-15`, mix: "mid", category: "Infrastructure", priority: "high", actualSpendingRatio: 0.62, committedRatio: 0.78 },
-  { name: "Bandung Smart Traffic System", subholdingId: "sub-infra", templateId: "tpl-it", ownerId: "user-010", approvedBudget: 32, status: "active", startDate: `${YEAR}-03-01`, targetCompletionDate: `${YEAR}-08-30`, mix: "early", category: "IT", priority: "medium", actualSpendingRatio: 0.18, committedRatio: 0.32 },
-  { name: "Surabaya Mixed-Use Tower", subholdingId: "sub-property", templateId: "tpl-infra", ownerId: "user-011", approvedBudget: 180, status: "active", startDate: `${YEAR}-01-20`, targetCompletionDate: `${YEAR}-11-15`, riskOverride: "medium", mix: "mid", category: "Infrastructure", priority: "high", actualSpendingRatio: 0.68, committedRatio: 0.8 },
-  { name: "Jakarta HQ Office Renovation", subholdingId: "sub-property", templateId: "tpl-facility", ownerId: "user-011", approvedBudget: 24, status: "active", startDate: `${YEAR}-04-01`, targetCompletionDate: `${YEAR}-07-15`, mix: "early", category: "Facility", priority: "medium", actualSpendingRatio: 0.22, committedRatio: 0.4 },
-  { name: "East Java Distribution Center", subholdingId: "sub-logistics", templateId: "tpl-procurement", ownerId: "user-012", approvedBudget: 65, status: "active", startDate: `${YEAR}-02-15`, targetCompletionDate: `${YEAR}-08-30`, mix: "mid", category: "Procurement", priority: "high", actualSpendingRatio: 0.58, committedRatio: 0.7 },
-  { name: "Fleet Electrification Phase 1", subholdingId: "sub-logistics", templateId: "tpl-procurement", ownerId: "user-012", approvedBudget: 42, status: "active", startDate: `${YEAR}-03-10`, targetCompletionDate: `${YEAR}-09-15`, mix: "early", category: "Procurement", priority: "medium", actualSpendingRatio: 0.12, committedRatio: 0.25 },
-  { name: "Customer Data Platform Rollout", subholdingId: "sub-digital", templateId: "tpl-it", ownerId: "user-008", approvedBudget: 28, status: "active", startDate: `${YEAR}-02-01`, targetCompletionDate: `${YEAR}-06-30`, mix: "late", category: "IT", priority: "high", actualSpendingRatio: 0.82, committedRatio: 0.92 },
-  { name: "Group ERP Stabilization", subholdingId: "sub-digital", templateId: "tpl-it", ownerId: "user-008", approvedBudget: 55, status: "delayed", startDate: `${YEAR}-01-15`, targetCompletionDate: `${YEAR}-08-30`, riskOverride: "critical", mix: "mid", category: "IT", priority: "high", actualSpendingRatio: 0.78, committedRatio: 0.95 },
-  { name: "Branchless Banking Expansion", subholdingId: "sub-digital", templateId: "tpl-expansion", ownerId: "user-008", approvedBudget: 38, status: "waiting_approval", startDate: `${YEAR}-06-01`, targetCompletionDate: `${YEAR}-12-15`, mix: "early", category: "Expansion", priority: "medium", actualSpendingRatio: 0, committedRatio: 0.05 },
-  { name: "Bali Resort Development", subholdingId: "sub-property", templateId: "tpl-infra", ownerId: "user-011", approvedBudget: 220, status: "draft", startDate: `${YEAR}-07-01`, targetCompletionDate: `${YEAR + 1}-12-15`, mix: "early", category: "Infrastructure", priority: "medium", actualSpendingRatio: 0, committedRatio: 0 },
-  { name: "Cikarang Industrial Estate Phase 3", subholdingId: "sub-property", templateId: "tpl-infra", ownerId: "user-011", approvedBudget: 160, status: "active", startDate: `${YEAR}-01-20`, targetCompletionDate: `${YEAR}-10-30`, mix: "late", category: "Infrastructure", priority: "high", actualSpendingRatio: 0.88, committedRatio: 0.95 },
-  { name: "Medan Data Center Build", subholdingId: "sub-digital", templateId: "tpl-facility", ownerId: "user-008", approvedBudget: 95, status: "active", startDate: `${YEAR}-02-20`, targetCompletionDate: `${YEAR}-09-30`, mix: "mid", category: "Facility", priority: "high", actualSpendingRatio: 0.5, committedRatio: 0.7 },
-  { name: "South Sulawesi Wind Pilot", subholdingId: "sub-energy", templateId: "tpl-infra", ownerId: "user-009", approvedBudget: 75, status: "on_hold", startDate: `${YEAR}-01-15`, targetCompletionDate: `${YEAR}-10-15`, riskOverride: "high", mix: "early", category: "Infrastructure", priority: "medium", actualSpendingRatio: 0.18, committedRatio: 0.3 },
-  { name: "Logistics Tracking Modernization", subholdingId: "sub-logistics", templateId: "tpl-it", ownerId: "user-012", approvedBudget: 18, status: "completed", startDate: `${YEAR - 1}-10-01`, targetCompletionDate: `${YEAR}-02-15`, mix: "done", category: "IT", priority: "medium", actualSpendingRatio: 1.0, committedRatio: 1.0 },
-  { name: "Property Portfolio Audit", subholdingId: "sub-property", templateId: "tpl-facility", ownerId: "user-011", approvedBudget: 8, status: "completed", startDate: `${YEAR - 1}-09-01`, targetCompletionDate: `${YEAR}-01-30`, mix: "done", category: "Facility", priority: "low", actualSpendingRatio: 0.95, committedRatio: 1.0 },
-  { name: "Energy Efficiency Program", subholdingId: "sub-energy", templateId: "tpl-expansion", ownerId: "user-009", approvedBudget: 30, status: "cancelled", startDate: `${YEAR}-02-01`, targetCompletionDate: `${YEAR}-09-15`, riskOverride: "low", mix: "early", category: "Expansion", priority: "low", actualSpendingRatio: 0.1, committedRatio: 0.1 },
-  { name: "Subholding Network Refresh", subholdingId: "sub-digital", templateId: "tpl-procurement", ownerId: "user-008", approvedBudget: 22, status: "active", startDate: `${YEAR}-03-15`, targetCompletionDate: `${YEAR}-08-15`, mix: "mid", category: "Procurement", priority: "medium", actualSpendingRatio: 0.45, committedRatio: 0.6 },
+  { name: "Tanjung Priok Port Expansion", subholdingId: "sub-infra", templateId: "tpl-infra", ownerId: "user-002", approvedBudget: 280, status: "active", startDate: `${YEAR}-01-10`, targetCompletionDate: `${YEAR}-12-20`, mix: "late", category: "Infrastructure", priority: "high", actualSpendingRatio: 0.82, committedRatio: 0.95 },
+  { name: "Bandung Smart Traffic System", subholdingId: "sub-infra", templateId: "tpl-it", ownerId: "user-002", approvedBudget: 32, status: "active", startDate: `${YEAR}-03-01`, targetCompletionDate: `${YEAR}-08-30`, mix: "early", category: "IT", priority: "medium", actualSpendingRatio: 0.18, committedRatio: 0.32 },
+  { name: "Cibinong Solar Farm Phase 2", subholdingId: "sub-energy", templateId: "tpl-infra", ownerId: "user-001", approvedBudget: 120, status: "active", startDate: `${YEAR}-01-15`, targetCompletionDate: `${YEAR}-09-30`, mix: "mid", category: "Infrastructure", priority: "high", actualSpendingRatio: 0.72, committedRatio: 0.85 },
+  { name: "Pekanbaru Grid Modernization", subholdingId: "sub-energy", templateId: "tpl-it", ownerId: "user-001", approvedBudget: 45, status: "active", startDate: `${YEAR}-02-01`, targetCompletionDate: `${YEAR}-07-30`, mix: "mid", category: "IT", priority: "high", actualSpendingRatio: 0.55, committedRatio: 0.7 },
+  { name: "Surabaya Mixed-Use Tower", subholdingId: "sub-property", templateId: "tpl-infra", ownerId: "user-001", approvedBudget: 180, status: "active", startDate: `${YEAR}-01-20`, targetCompletionDate: `${YEAR}-11-15`, mix: "mid", category: "Infrastructure", priority: "high", actualSpendingRatio: 0.68, committedRatio: 0.8 },
+  { name: "Jakarta HQ Office Renovation", subholdingId: "sub-property", templateId: "tpl-facility", ownerId: "user-001", approvedBudget: 24, status: "active", startDate: `${YEAR}-04-01`, targetCompletionDate: `${YEAR}-07-15`, mix: "early", category: "Facility", priority: "medium", actualSpendingRatio: 0.22, committedRatio: 0.4 },
+  { name: "East Java Distribution Center", subholdingId: "sub-logistics", templateId: "tpl-facility", ownerId: "user-001", approvedBudget: 65, status: "active", startDate: `${YEAR}-02-15`, targetCompletionDate: `${YEAR}-08-30`, mix: "mid", category: "Facility", priority: "high", actualSpendingRatio: 0.58, committedRatio: 0.7 },
+  { name: "Customer Data Platform Rollout", subholdingId: "sub-digital", templateId: "tpl-it", ownerId: "user-001", approvedBudget: 28, status: "active", startDate: `${YEAR}-02-01`, targetCompletionDate: `${YEAR}-06-30`, mix: "late", category: "IT", priority: "high", actualSpendingRatio: 0.82, committedRatio: 0.92 },
 ];
 
 const projects: Project[] = projectSeed.map((p, i) => {
@@ -487,7 +374,7 @@ const projects: Project[] = projectSeed.map((p, i) => {
       timestamp: `${p.startDate}T09:00:00`,
       userId: p.ownerId,
       action: "Team assigned",
-      description: "Project owner, subholding admin and supporting team assigned.",
+      description: "Project owner and supporting team assigned.",
     },
   ];
   return {
@@ -507,7 +394,6 @@ const projects: Project[] = projectSeed.map((p, i) => {
     startDate: p.startDate,
     targetCompletionDate: p.targetCompletionDate,
     priority: p.priority,
-    riskOverride: p.riskOverride,
     notes: "",
     milestones,
     spending,
@@ -520,21 +406,9 @@ const approvals: ApprovalRequest[] = (() => {
   const list: ApprovalRequest[] = [];
   let counter = 1;
   for (const project of projects) {
-    if (project.status === "waiting_approval") {
-      list.push({
-        id: ID("apr", counter++),
-        type: "project_approval",
-        projectId: project.id,
-        subholdingId: project.subholdingId,
-        requestedBy: project.ownerId,
-        approverUserId: "user-013",
-        status: "pending",
-        submittedAt: `${YEAR}-05-12T10:00:00`,
-        priority: project.priority,
-      });
-    }
     for (const milestone of project.milestones) {
-      if (milestone.status === "submitted" && milestone.approvalStatus === "pending") {
+      if (milestone.status === "in_progress" && milestone.approvalStatus === "pending") {
+        const approver = "user-001";
         list.push({
           id: ID("apr", counter++),
           type: "milestone_approval",
@@ -542,7 +416,7 @@ const approvals: ApprovalRequest[] = (() => {
           subholdingId: project.subholdingId,
           milestoneId: milestone.id,
           requestedBy: project.ownerId,
-          approverUserId: project.priority === "high" ? "user-013" : "user-014",
+          approverUserId: approver,
           status: "pending",
           submittedAt: `${YEAR}-05-15T09:00:00`,
           priority: project.priority,
@@ -550,36 +424,6 @@ const approvals: ApprovalRequest[] = (() => {
       }
     }
   }
-  // add historical approvals
-  list.push({
-    id: ID("apr", counter++),
-    type: "project_approval",
-    projectId: "p-001",
-    subholdingId: "sub-energy",
-    requestedBy: "user-009",
-    approverUserId: "user-013",
-    status: "approved",
-    submittedAt: `${YEAR - 1}-12-20T09:00:00`,
-    decisionAt: `${YEAR - 1}-12-22T11:00:00`,
-    decisionComment: "Approved with standard conditions.",
-    priority: "high",
-  });
-  list.push({
-    id: ID("apr", counter++),
-    type: "milestone_approval",
-    projectId: "p-001",
-    subholdingId: "sub-energy",
-    milestoneId: "p-001-m1",
-    requestedBy: "user-009",
-    approverUserId: "user-016",
-    status: "approved",
-    submittedAt: `${YEAR}-02-10T08:00:00`,
-    decisionAt: `${YEAR}-02-12T08:00:00`,
-    decisionComment: "Land acquisition verified.",
-    priority: "high",
-  });
-  // attach to demo approver users
-  const approverIds = users.filter((u) => u.role === "approver").map((u) => u.id);
   for (const approval of list) {
     const user = users.find((u) => u.id === approval.approverUserId);
     if (user) {
@@ -590,12 +434,12 @@ const approvals: ApprovalRequest[] = (() => {
 })();
 
 export const seedState: AppState = {
-  version: 1,
+  version: 2,
   globalYear: YEAR,
   globalPeriod: "quarterly",
   globalQuarter: "Q2",
   subholdings,
-  users,
+  users: users as unknown as AppState["users"],
   templates,
   projects,
   approvals,
@@ -603,9 +447,5 @@ export const seedState: AppState = {
     { id: "rpt-1", name: "Quarterly Project Performance Report", period: "quarterly", description: "Project status, milestones, and risk distribution per quarter.", lastGenerated: "2026-04-05", format: "PDF/Excel" },
     { id: "rpt-2", name: "Semester Budget Utilization Report", period: "semesterly", description: "Approved budget, actual spending, and variance per semester.", lastGenerated: "2026-04-05", format: "PDF/Excel" },
     { id: "rpt-3", name: "Annual Portfolio Summary", period: "annually", description: "Full portfolio status, completion rate, and ROI by subholding.", lastGenerated: "2026-01-30", format: "PDF/Excel" },
-    { id: "rpt-4", name: "Subholding Performance Report", period: "quarterly", description: "Subholding scorecard across financial and operational KPIs.", lastGenerated: "2026-04-05", format: "PDF" },
-    { id: "rpt-5", name: "Project Delay Report", period: "quarterly", description: "Projects whose milestones have slipped past planned dates.", lastGenerated: "2026-04-05", format: "Excel" },
-    { id: "rpt-6", name: "Budget Overrun Report", period: "semesterly", description: "Projects exceeding approved budget utilization thresholds.", lastGenerated: "2026-04-05", format: "Excel" },
-    { id: "rpt-7", name: "Approval Aging Report", period: "quarterly", description: "Open approval requests aged by days and priority.", lastGenerated: "2026-04-05", format: "PDF" },
   ],
 };

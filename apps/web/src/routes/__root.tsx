@@ -1,4 +1,4 @@
-import { Outlet, createRootRouteWithContext, useLocation } from "@tanstack/react-router";
+import { Outlet, createRootRouteWithContext, redirect, useLocation } from "@tanstack/react-router";
 import { Toaster } from "@project-management-mockup/ui/components/sonner";
 import { ShieldAlert } from "lucide-react";
 
@@ -8,12 +8,20 @@ import { ThemeProvider } from "@/components/theme-provider";
 import { AppStateProvider, useAppState } from "@/lib/app-state";
 import { canAccessRoute } from "@/lib/permissions";
 import { getCurrentUser } from "@/lib/selectors";
+import { readCurrentUserId } from "@/lib/storage";
 
 import "../index.css";
 
 export interface RouterAppContext {}
 
 export const Route = createRootRouteWithContext<RouterAppContext>()({
+  beforeLoad: ({ location }) => {
+    if (location.pathname === "/login") return;
+    const userId = readCurrentUserId();
+    if (!userId) {
+      throw redirect({ to: "/login" });
+    }
+  },
   component: RootComponent,
   head: () => ({
     meta: [
@@ -40,17 +48,7 @@ function GuardedShell() {
   }
 
   if (!user) {
-    return (
-      <div className="h-svh flex items-center justify-center bg-background p-6">
-        <div className="max-w-md text-center">
-          <ShieldAlert className="size-8 text-muted-foreground mx-auto" />
-          <div className="mt-2 text-sm font-medium text-foreground">Not signed in</div>
-          <div className="mt-1 text-xs text-muted-foreground">
-            Please use the login page to choose a demo user.
-          </div>
-        </div>
-      </div>
-    );
+    throw redirect({ to: "/login" });
   }
 
   const access = canAccessRoute(user, location.pathname);

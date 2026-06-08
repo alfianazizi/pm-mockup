@@ -1,14 +1,9 @@
 import { Link, useLocation } from "@tanstack/react-router";
 import {
-  BarChart3,
   CheckSquare,
-  FileText,
   FolderKanban,
   Gauge,
   LayoutTemplate,
-  Settings,
-  ShieldCheck,
-  Users,
 } from "lucide-react";
 import type { ComponentType } from "react";
 
@@ -23,14 +18,9 @@ interface NavItem {
 
 const NAV: NavItem[] = [
   { to: "/dashboard", label: "Dashboard", key: "dashboard", icon: Gauge },
-  { to: "/subholdings", label: "Subholdings", key: "subholdings", icon: BarChart3 },
   { to: "/templates", label: "Project Templates", key: "templates", icon: LayoutTemplate },
   { to: "/projects", label: "Projects", key: "projects", icon: FolderKanban },
-  { to: "/budget-monitoring", label: "Budget Monitoring", key: "budget-monitoring", icon: ShieldCheck },
   { to: "/approvals", label: "Milestones & Approvals", key: "approvals", icon: CheckSquare },
-  { to: "/reports", label: "Reports", key: "reports", icon: FileText },
-  { to: "/users", label: "Users & Roles", key: "users", icon: Users },
-  { to: "/settings", label: "Settings", key: "settings", icon: Settings },
 ];
 
 export function Sidebar({ items, currentPath }: { items: NavItem[]; currentPath: string }) {

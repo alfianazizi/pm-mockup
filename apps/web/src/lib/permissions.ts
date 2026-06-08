@@ -8,29 +8,63 @@ export interface AccessResult {
 const menuByRole: Record<Role, string[]> = {
   holding_admin: [
     "dashboard",
-    "subholdings",
     "templates",
     "projects",
-    "budget-monitoring",
     "approvals",
-    "reports",
-    "users",
-    "settings",
   ],
   holding_executive: [
     "dashboard",
-    "subholdings",
     "projects",
-    "budget-monitoring",
     "approvals",
-    "reports",
   ],
-  finance_controller: ["dashboard", "subholdings", "budget-monitoring", "reports"],
-  subholding_admin: ["dashboard", "subholdings", "templates", "projects", "budget-monitoring", "approvals", "users"],
-  project_owner: ["dashboard", "projects", "approvals", "reports"],
-  approver: ["dashboard", "approvals", "projects"],
-  viewer: ["dashboard", "projects", "subholdings"],
+  finance_controller: [
+    "dashboard",
+    "approvals",
+  ],
+  subholding_admin: [
+    "dashboard",
+    "templates",
+    "projects",
+    "approvals",
+  ],
+  project_owner: [
+    "dashboard",
+    "projects",
+    "approvals",
+  ],
+  approver: [
+    "dashboard",
+    "approvals",
+    "projects",
+  ],
+  viewer: [
+    "dashboard",
+    "projects",
+  ],
 };
+
+const focusMenuKeys = new Set([
+  "dashboard",
+  "templates",
+  "projects",
+  "approvals",
+]);
+
+const outOfFocusRoutes = new Set([
+  "/subholdings",
+  "/budget-monitoring",
+  "/reports",
+  "/users",
+  "/settings",
+]);
+
+export function isOutOfFocusRoute(pathname: string): boolean {
+  return outOfFocusRoutes.has(pathname) || Array.from(outOfFocusRoutes).some((route) => pathname.startsWith(`${route}/`));
+}
+
+export function isFocusMenuKey(key: string): boolean {
+  return focusMenuKeys.has(key);
+}
 
 export function canAccessMenu(user: DemoUser | undefined, key: string): boolean {
   if (!user) return false;

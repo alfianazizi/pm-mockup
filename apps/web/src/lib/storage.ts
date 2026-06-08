@@ -33,3 +33,17 @@ export function resetState(): AppState {
   }
   return seedState;
 }
+
+export function readCurrentUserId(): string | undefined {
+  if (typeof window === "undefined") return undefined;
+  try {
+    const raw = window.localStorage.getItem(STORAGE_KEY);
+    if (!raw) return undefined;
+    const parsed = JSON.parse(raw) as Partial<AppState> | null;
+    if (!parsed || typeof parsed !== "object") return undefined;
+    const id = parsed.currentUserId;
+    return typeof id === "string" && id.length > 0 ? id : undefined;
+  } catch {
+    return undefined;
+  }
+}
