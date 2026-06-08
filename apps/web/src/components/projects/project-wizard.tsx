@@ -164,7 +164,7 @@ export function ProjectWizard({ onDone }: { onDone: () => void }) {
     <div className="space-y-6">
       <PageHeader
         title="Create new project"
-        description="Build a project from a Holding Admin-approved template. Existing templates are snapshot-copied."
+        description="Set up a new project step by step. Pick a subholding, choose a template, fill in the details, and review before saving."
         actions={
           <Button variant="outline" size="sm" onClick={onDone}>
             <ArrowLeft className="size-3.5" /> Back to projects
@@ -210,7 +210,8 @@ export function ProjectWizard({ onDone }: { onDone: () => void }) {
 
       {stepIndex === 0 ? (
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-          <SectionCard title="Select subholding" description="Choose the business unit that will own this project">
+          <SectionCard         title="Choose the subholding"
+        description="Pick which business unit will own this project.">
             <div className="grid grid-cols-1 gap-2">
               {subholdings.map((s) => (
                 <button
@@ -238,7 +239,8 @@ export function ProjectWizard({ onDone }: { onDone: () => void }) {
               ) : null}
             </div>
           </SectionCard>
-          <SectionCard title="Select template" description="Templates provide the default milestones and approval rules">
+          <SectionCard         title="Choose a template"
+        description="Templates come with milestones, steps, and approval rules ready to go.">
             <div className="grid grid-cols-1 gap-2">
               {templates.map((t) => (
                 <button
@@ -273,7 +275,8 @@ export function ProjectWizard({ onDone }: { onDone: () => void }) {
       ) : null}
 
       {stepIndex === 1 ? (
-        <SectionCard title="Project details" description="The basics that will appear in the project portfolio">
+        <SectionCard         title="Project details"
+        description="The basics that will appear in your project list.">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
             <div>
               <Label>Project name *</Label>
@@ -341,7 +344,8 @@ export function ProjectWizard({ onDone }: { onDone: () => void }) {
 
       {stepIndex === 2 ? (
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-          <SectionCard title="Budget" description="Approved project budget (IDR billions)">
+          <SectionCard         title="Budget"
+        description="Set the approved project budget in IDR billions.">
             <div className="space-y-3">
               <div>
                 <Label>Approved budget (Rp billions)</Label>
@@ -371,7 +375,8 @@ export function ProjectWizard({ onDone }: { onDone: () => void }) {
               />
             </div>
           </SectionCard>
-          <SectionCard title="Team" description="Owner and approver for this project">
+          <SectionCard         title="Team"
+        description="Choose who owns the project and who will approve it.">
             <div className="space-y-3">
               <div>
                 <Label>Project owner *</Label>
@@ -419,7 +424,8 @@ export function ProjectWizard({ onDone }: { onDone: () => void }) {
       ) : null}
 
       {stepIndex === 3 ? (
-        <SectionCard title="Generated milestones and steps" description="Snapshot from the template. You can edit dates and assignees after creation.">
+        <SectionCard         title="Milestones and steps"
+        description="These come from the template. You can change dates and assignees after the project is created.">
           {!selectedTemplate ? (
             <div className="text-xs text-muted-foreground">Select a template to see milestones.</div>
           ) : (
@@ -456,7 +462,8 @@ export function ProjectWizard({ onDone }: { onDone: () => void }) {
       ) : null}
 
       {stepIndex === 4 ? (
-        <SectionCard title="Review" description="Confirm the project details before saving">
+        <SectionCard         title="Review"
+        description="Check the project details before saving.">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
             <div>
               <div className="text-muted-foreground">Subholding</div>

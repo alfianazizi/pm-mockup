@@ -52,7 +52,7 @@ function LoginPage() {
                 <div>
                   <div className="text-sm font-medium">Project Templates</div>
                   <div className="text-xs text-sidebar-muted">
-                    Governed centrally. Edit milestones, steps, approvals, and risk checklist.
+                    Reusable blueprints with milestones, steps, and approval rules.
                   </div>
                 </div>
               </div>
@@ -74,14 +74,14 @@ function LoginPage() {
                 <div>
                   <div className="text-sm font-medium">Approvals</div>
                   <div className="text-xs text-sidebar-muted">
-                    Project and milestone approvals update lifecycle state in local storage.
+                    Approve, reject, or request revision on project and milestone submissions.
                   </div>
                 </div>
               </div>
             </div>
           </div>
           <div className="text-[11px] text-sidebar-muted">
-            Prototype build for stakeholder review. Data is mocked and stored locally.
+            Signed-in data is stored locally in your browser.
           </div>
         </div>
         <div className="flex flex-col p-6 md:p-10">
@@ -98,8 +98,7 @@ function LoginPage() {
             <div>
               <h2 className="text-xl font-semibold text-foreground">Sign in to continue</h2>
               <p className="text-xs text-muted-foreground mt-1">
-                Two demo users are available. Switch personas to see different scopes and
-                permissions.
+                Pick a persona to sign in. Each one sees a different scope.
               </p>
             </div>
             <div className="mt-6 grid sm:grid-cols-2 gap-4">

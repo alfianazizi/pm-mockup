@@ -10,7 +10,7 @@ function BudgetMonitoringPage() {
   return (
     <FocusStub
       title="Budget Monitoring"
-      description="The prototype focuses on Project and Template flows. Budget monitoring remains accessible for direct URL access only."
+      description="Budget monitoring is not part of the current release. Project and template views are available."
     />
   );
 }

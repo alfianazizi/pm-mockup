@@ -56,7 +56,7 @@ function DashboardPage() {
     <div className="space-y-6">
       <PageHeader
         title={`Welcome back, ${user.name.split(" ")[0]}`}
-        description="Focused view: jump into Projects, Templates, or pending Approvals."
+        description="A quick look at your projects and what needs your attention."
         actions={
           <>
             <LinkButton size="sm" to="/projects">
@@ -107,8 +107,8 @@ function DashboardPage() {
             <div className="flex-1">
               <div className="text-sm font-medium text-foreground">Project Templates</div>
               <p className="text-xs text-muted-foreground mt-1">
-                Centrally governed by Holding Admin. Each project is created from a template and
-                snapshot-copies milestones and steps.
+                Reusable blueprints with milestones, steps, and approval rules. Pick one when
+                starting a new project.
               </p>
               <div className="mt-3">
                 <LinkButton size="sm" to="/templates">
@@ -126,13 +126,13 @@ function DashboardPage() {
             <div className="flex-1">
               <div className="text-sm font-medium text-foreground">Projects</div>
               <p className="text-xs text-muted-foreground mt-1">
-                Average progress {Math.round(avgProgress * 100)}% across {projects.length}{" "}
-                project{projects.length === 1 ? "" : "s"}. Drill into a project for milestones,
-                steps, approvals, attachments, and activity log.
+                Average progress is {Math.round(avgProgress * 100)}% across {projects.length}{" "}
+                project{projects.length === 1 ? "" : "s"}. Open one to see milestones, approvals,
+                attachments, and recent activity.
               </p>
               <div className="mt-3">
                 <LinkButton size="sm" to="/projects">
-                  View portfolio
+                  View projects
                 </LinkButton>
               </div>
             </div>

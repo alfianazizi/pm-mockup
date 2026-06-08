@@ -10,7 +10,7 @@ function SubholdingsPage() {
   return (
     <FocusStub
       title="Subholdings"
-      description="Subholding management is hidden in the menu. The focus of this prototype is Project and Template."
+      description="Subholdings are not part of the current release. Use the project and template views to see your work."
       backTo="/projects"
     />
   );

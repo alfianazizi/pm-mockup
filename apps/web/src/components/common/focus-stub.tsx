@@ -15,13 +15,13 @@ interface FocusStubProps {
 export function FocusStub({ title, description, backTo = "/projects", backLabel = "Back to projects" }: FocusStubProps) {
   return (
     <div className="space-y-6">
-      <PageHeader title={title} description="This module is out of scope for the current prototype focus." />
+      <PageHeader title={title} description="This view is not part of the current release." />
       <Card className="p-6 ring-1 ring-inset ring-foreground/10">
         <div className="flex flex-col items-center text-center gap-3 max-w-md mx-auto">
           <div className="size-10 rounded-sm bg-muted text-muted-foreground flex items-center justify-center">
             <Compass className="size-5" />
           </div>
-          <div className="text-sm font-medium text-foreground">Out of focus for the prototype</div>
+          <div className="text-sm font-medium text-foreground">Not available in this release</div>
           {description ? <div className="text-xs text-muted-foreground">{description}</div> : null}
           <Link
             to={backTo}

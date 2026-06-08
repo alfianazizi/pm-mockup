@@ -28,7 +28,7 @@ export const Route = createRootRouteWithContext<RouterAppContext>()({
       { title: "Pratama Holding PMO" },
       {
         name: "description",
-        content: "Frontend-only project management and budget monitoring dashboard prototype.",
+        content: "Manage projects and templates across the holding.",
       },
     ],
     links: [

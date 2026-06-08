@@ -201,10 +201,11 @@ export function TemplateEditor({ templateId, onDone }: { templateId?: string; on
       <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
         <div>
           <h1 className="text-xl font-semibold tracking-tight text-foreground">
-            {templateId ? "Edit Project Template" : "New Project Template"}
+            {templateId ? "Edit template" : "New template"}
           </h1>
           <p className="text-xs text-muted-foreground mt-1">
-            Define milestones, steps, approval rules, and criteria. Existing projects retain a snapshot.
+            Add milestones, steps, approval rules, and other details. Projects you create from this
+            template will keep their own copy.
           </p>
         </div>
         <div className="flex items-center gap-2">

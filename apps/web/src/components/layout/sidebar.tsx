@@ -18,9 +18,9 @@ interface NavItem {
 
 const NAV: NavItem[] = [
   { to: "/dashboard", label: "Dashboard", key: "dashboard", icon: Gauge },
-  { to: "/templates", label: "Project Templates", key: "templates", icon: LayoutTemplate },
+  { to: "/templates", label: "Templates", key: "templates", icon: LayoutTemplate },
   { to: "/projects", label: "Projects", key: "projects", icon: FolderKanban },
-  { to: "/approvals", label: "Milestones & Approvals", key: "approvals", icon: CheckSquare },
+  { to: "/approvals", label: "Approvals", key: "approvals", icon: CheckSquare },
 ];
 
 export function Sidebar({ items, currentPath }: { items: NavItem[]; currentPath: string }) {

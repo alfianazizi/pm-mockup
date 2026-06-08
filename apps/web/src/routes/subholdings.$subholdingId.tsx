@@ -10,7 +10,7 @@ function SubholdingDetailPage() {
   return (
     <FocusStub
       title="Subholding detail"
-      description="Subholding detail is out of scope for the focused prototype."
+      description="Subholding detail is not part of the current release."
       backTo="/projects"
     />
   );

@@ -128,8 +128,8 @@ function TemplatesPage() {
   return (
     <div className="space-y-6">
       <PageHeader
-        title="Project Templates"
-        description="Standardized blueprints for projects. Edits are restricted to Holding Admin; other roles can use templates."
+        title="Templates"
+        description="Reusable blueprints for new projects. Pick one when starting a project so milestones and approvals are consistent."
         actions={
           <>
             <Button
@@ -160,7 +160,7 @@ function TemplatesPage() {
 
       <SectionCard
         title={showArchived ? "Archived templates" : "Active templates"}
-        description="Centralized library used by the project wizard."
+        description="Pick a template when creating a new project."
       >
         <DataTable rowKey={(row) => row.id} rows={rows} columns={columns} />
       </SectionCard>

@@ -46,7 +46,7 @@ export function Topbar({ user, onOpenMobileNav }: { user: DemoUser; onOpenMobile
   };
 
   const handleReset = () => {
-    if (window.confirm("Reset all demo data to seed state?")) {
+    if (window.confirm("Reset all data to the seeded example state?")) {
       reset();
       setMenuOpen(false);
     }
@@ -125,7 +125,7 @@ export function Topbar({ user, onOpenMobileNav }: { user: DemoUser; onOpenMobile
                   onClick={handleReset}
                   className="flex items-center gap-2 px-2 py-2 text-xs rounded-sm text-foreground hover:bg-muted"
                 >
-                  Reset demo data
+                  Reset to example data
                 </button>
               </div>
             </Card>

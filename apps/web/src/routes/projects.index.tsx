@@ -180,7 +180,7 @@ function ProjectsPage() {
     <div className="space-y-6">
       <PageHeader
         title="Projects"
-        description="Portfolio of initiatives across the holding. Filter by lifecycle, subholding, and risk."
+        description="All projects in your scope. Use the filters to narrow the list."
         actions={
           <>
             <Button
@@ -223,7 +223,7 @@ function ProjectsPage() {
         </div>
       </div>
 
-      <SectionCard title={showArchived ? "Archived projects" : "Project portfolio"} description={`${rows.length} project(s) in scope`}>
+      <SectionCard title={showArchived ? "Archived projects" : "Projects"} description={`${rows.length} project${rows.length === 1 ? "" : "s"} in your scope`}>
         <DataTable
           rowKey={(row) => row.id}
           rows={rows}

@@ -10,7 +10,7 @@ function ReportsPage() {
   return (
     <FocusStub
       title="Reports"
-      description="Reports remain accessible for direct URL access; the prototype focuses on Project and Template."
+      description="Reports are not part of the current release."
     />
   );
 }

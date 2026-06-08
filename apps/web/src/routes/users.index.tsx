@@ -10,7 +10,7 @@ function UsersPage() {
   return (
     <FocusStub
       title="Users & Roles"
-      description="The prototype uses a small, fixed set of demo users. See the login page to sign in as a different persona."
+      description="User management is not part of the current release. Sign in from the login page to switch persona."
     />
   );
 }

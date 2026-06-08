@@ -10,7 +10,7 @@ function SettingsPage() {
   return (
     <FocusStub
       title="Settings"
-      description="Global settings are out of scope for the focused prototype."
+      description="Settings are not part of the current release."
     />
   );
 }

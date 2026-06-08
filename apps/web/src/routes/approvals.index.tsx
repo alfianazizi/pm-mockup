@@ -123,8 +123,8 @@ function ApprovalsPage() {
   return (
     <div className="space-y-6">
       <PageHeader
-        title="Milestones & Approvals"
-        description="Centralized approval queue. Project and milestone approvals are interactive; budget and completion approvals are read-only examples."
+        title="Approvals"
+        description="Review and decide on project and milestone submissions waiting for you."
       />
 
       <div className="flex flex-col gap-2 sm:flex-row sm:items-center">

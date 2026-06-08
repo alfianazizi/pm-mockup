@@ -676,7 +676,7 @@ function AttachmentsTab({ projectId, canManage }: { projectId: string; canManage
   return (
     <SectionCard
       title="Attachments"
-      description="Metadata only. Files are not stored in this prototype."
+      description="File records only. No file content is stored."
       action={
         canManage ? (
           <div className="flex items-center gap-2">
